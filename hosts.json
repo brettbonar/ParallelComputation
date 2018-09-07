@@ -1,0 +1,10 @@
+{
+  "hosts":
+    [
+      {
+        "hostname": "localhost",
+        "processes": 2
+      }
+    ],
+  "mainFile" : "Assignment1.js"
+}
