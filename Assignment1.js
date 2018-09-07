@@ -14,7 +14,7 @@
 
 //     return 0;
 
-const MPI = require("mpi-node");
+let MPI = require("mpi-node");
 
 MPI.init();
 let rank = MPI.rank();
