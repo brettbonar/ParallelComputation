@@ -16,9 +16,10 @@
 
 let MPI = require("mpi-node");
 
-MPI.init();
-let rank = MPI.rank();
-let size = MPI.size();
-
-MPI.send((rank + 1) % size, { msgType: "test", content: rank });
-MPI.recv("test", (data) => console.log(data));
+MPI.init(() => {
+  let rank = MPI.rank();
+  let size = MPI.size();
+  
+  MPI.send((rank + 1) % size, { msgType: "test", content: rank });
+  MPI.recv("test", (data) => console.log(data));
+});
