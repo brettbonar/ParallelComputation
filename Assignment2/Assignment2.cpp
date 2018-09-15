@@ -17,7 +17,7 @@ int main(int argc, char **argv){
   if (rank == 0)
   {
     MPI_Send(&bomb, 1 , MPI_INT, std::rand() % size, 0, MCW);
-    std::cout << "Start timer: " << bomb << std::endl;
+    std::cerr << "Start timer: " << bomb << std::endl;
   }
 
 
@@ -29,12 +29,12 @@ int main(int argc, char **argv){
       break;
     }
 
-    std::cout << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
-    std::flush();
+    std::cerr << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
+
     bomb--;
     if (!bomb)
     {
-      std::cout << rank << " loses!" << std::endl;
+      std::cerr << rank << " loses!" << std::endl;
       for (int i = 0; i < size; i++)
       {
         if (i != rank)
