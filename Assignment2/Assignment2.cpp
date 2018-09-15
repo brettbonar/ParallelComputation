@@ -22,7 +22,6 @@ int main(int argc, char **argv){
     std::cerr << "Start timer: " << bomb << std::endl;
   }
 
-
   while (true)
   {
     MPI_Recv(&bomb, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
