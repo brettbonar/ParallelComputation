@@ -33,7 +33,13 @@ int main(int argc, char **argv){
     if (!bomb)
     {
       std::cout << rank << " loses!" << std::endl;
-      MPI_Bcast(&bomb, 1, MPI_INT, 0, MCW);
+      for (int i = 0; i < size; i++)
+      {
+        if (i != rank)
+        {
+          MPI_Send(&bomb, 1, MPI_INT, i, 0, MCW);
+        }
+      }
       break;
     }
     
