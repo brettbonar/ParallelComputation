@@ -17,11 +17,14 @@ int main(int argc, char **argv){
   if (rank == 0)
   {
     MPI_Send(&bomb, 1 , MPI_INT, std::rand() % size, 0, MCW);
+    std::cout << "Start timer: " << bomb << std::endl;
   }
+
 
   while (true)
   {
     MPI_Recv(&bomb, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
+    std::cout << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
     if (!bomb)
     {
       break;
