@@ -24,11 +24,12 @@ int main(int argc, char **argv){
   while (true)
   {
     MPI_Recv(&bomb, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
-    std::cout << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
     if (!bomb)
     {
       break;
     }
+    
+    std::cout << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
     bomb--;
     if (!bomb)
     {
