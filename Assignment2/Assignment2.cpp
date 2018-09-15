@@ -28,8 +28,9 @@ int main(int argc, char **argv){
     {
       break;
     }
-    
+
     std::cout << rank << " received bomb with " << bomb << " seconds left!" << std::endl;
+    std::flush();
     bomb--;
     if (!bomb)
     {
