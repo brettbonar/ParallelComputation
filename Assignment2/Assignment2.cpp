@@ -1,23 +1,42 @@
 #include <iostream>
 #include <mpi.h>
+#include <stdlib.h>   
 #define MCW MPI_COMM_WORLD
 
 using namespace std;
 
 int main(int argc, char **argv){
-    int rank, size;
-    int data;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_rank(MCW, &rank); 
-    MPI_Comm_size(MCW, &size); 
+  int rank, size;
+  int data;
+  int bomb = rand % 1000 + 1; // Random timer from 1 - 1000
+  
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MCW, &rank); 
+  MPI_Comm_size(MCW, &size); 
 
-    MPI_Send(&rank,1,MPI_INT,(rank+1)%size,0,MCW);
-    MPI_Recv(&data,1,MPI_INT,MPI_ANY_SOURCE,0,MCW,MPI_STATUS_IGNORE);
+  if (rank == 0)
+  {
+    MPI_Send(&bomb, 1 , MPI_INT, rand % size, 0, MCW);
+  }
 
+  while (true)
+  {
+    MPI_Recv(&bomb, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
+    if (!bomb)
+    {
+      break;
+    }
+    bomb--;
+    if (!bomb)
+    {
+      std::cout << rank << " loses!" << std::endl;
+      break;
+    }
 
-    cout<<"I am "<<rank<<" of "<<size<<"; got a message from "<<data<<endl;
+    MPI_Bcast(&bomb, 1 , MPI_INT, rank, MCW);
+  }
 
-    MPI_Finalize();
+  MPI_Finalize();
 
-    return 0;
+  return 0;
 }
