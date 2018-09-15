@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char **argv){
   int rank, size;
   int data;
-  int bomb = std::rand % 1000 + 1; // Random timer from 1 - 1000
+  int bomb = std::rand() % 1000 + 1; // Random timer from 1 - 1000
   
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 
   if (rank == 0)
   {
-    MPI_Send(&bomb, 1 , MPI_INT, std::rand % size, 0, MCW);
+    MPI_Send(&bomb, 1 , MPI_INT, std::rand() % size, 0, MCW);
   }
 
   while (true)
