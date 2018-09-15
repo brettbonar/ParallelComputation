@@ -1,6 +1,7 @@
 #include <iostream>
 #include <mpi.h>
-#include <stdlib.h>   
+#include <stdlib.h>
+#include <time.h>
 #define MCW MPI_COMM_WORLD
 
 using namespace std;
@@ -8,6 +9,7 @@ using namespace std;
 int main(int argc, char **argv){
   int rank, size;
   int data;
+  std::srand(time(nullptr));
   int bomb = std::rand() % 1000 + 1; // Random timer from 1 - 1000
   
   MPI_Init(&argc, &argv);
