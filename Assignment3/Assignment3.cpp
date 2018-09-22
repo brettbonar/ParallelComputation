@@ -26,11 +26,11 @@ int main(int argc, char **argv){
   {
     for (int i = 0; i < length; i++)
     {
-      fullList[i] = std::rand() % length;
+      aggregateList[i] = std::rand() % length;
     }
   }
   
-  MPI_Scatter(fullList.data(), sortSize, MPI_INT, sortList.data(), sortSize, MPI_INT, 0, MCW);
+  MPI_Scatter(aggregateList.data(), sortSize, MPI_INT, sortList.data(), sortSize, MPI_INT, 0, MCW);
 
   std::sort(sortList.begin(), sortList.end());
 

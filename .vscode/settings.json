@@ -37,6 +37,9 @@
     "xmemory0": "cpp",
     "xstddef": "cpp",
     "xtr1common": "cpp",
-    "array": "cpp"
+    "array": "cpp",
+    "algorithm": "cpp",
+    "iterator": "cpp",
+    "tuple": "cpp"
   }
 }
