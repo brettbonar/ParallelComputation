@@ -53,312 +53,86 @@
 \maketitle
 
 \section{Implementation}
-My implementation has the process with rank 0 initialize the bomb timer to a random value from 1 to 1000. It then sends the bomb to a random process.
+The master process with rank 0 splits the input array into equally sized arrays to be consumed by every process.
 
-Each process stays in an infinite loop and waits to receive the bomb. On receiving the bomb, a process outputs its rank and the current timer on the bomb before decrementing the timer and sending it to another process other than itself.
+MPI Scatter is used to send the sublists to each process and an MPI Gather is used to collect the sorted sublists into the master process.
 
-If a process decrements the bomb to a 0 then it is declared the loser and sends the final bomb timer to every other process so they can exit their loop.
-
+The master process then merges the sorted lists and outputs the final result.
 \section{Code}
-\lstinputlisting[language=C++]{Assignment2.cpp}
+\lstinputlisting[language=C++]{Assignment3.cpp}
 
 \section{Compile and Run Commands}
 \begin{lstlisting}[language=bash]
-mpic++ Assignment2/Assignment2.cpp -o Assignment2/run.out
-mpirun -np 10 Assignment2/run.out
+mpic++ Assignment3/Assignment3.cpp -o Assignment3/run.out
+mpirun -np 8 Assignment3/run.out
 \end{lstlisting}
 
 \section{Output}
 \begin{lstlisting}[language=bash]
-Start timer: 287
-4 received bomb with 287 seconds left!
-3 received bomb with 286 seconds left!
-4 received bomb with 285 seconds left!
-6 received bomb with 284 seconds left!
-4 received bomb with 283 seconds left!
-8 received bomb with 282 seconds left!
-4 received bomb with 281 seconds left!
-7 received bomb with 280 seconds left!
-4 received bomb with 279 seconds left!
-6 received bomb with 278 seconds left!
-3 received bomb with 277 seconds left!
-6 received bomb with 276 seconds left!
-8 received bomb with 275 seconds left!
-3 received bomb with 274 seconds left!
-8 received bomb with 273 seconds left!
-6 received bomb with 272 seconds left!
-4 received bomb with 271 seconds left!
-5 received bomb with 270 seconds left!
-4 received bomb with 269 seconds left!
-6 received bomb with 268 seconds left!
-7 received bomb with 267 seconds left!
-3 received bomb with 266 seconds left!
-4 received bomb with 265 seconds left!
-7 received bomb with 264 seconds left!
-6 received bomb with 263 seconds left!
-5 received bomb with 262 seconds left!
-3 received bomb with 261 seconds left!
-7 received bomb with 260 seconds left!
-8 received bomb with 259 seconds left!
-4 received bomb with 258 seconds left!
-7 received bomb with 257 seconds left!
-4 received bomb with 256 seconds left!
-0 received bomb with 255 seconds left!
-3 received bomb with 254 seconds left!
-6 received bomb with 253 seconds left!
-7 received bomb with 252 seconds left!
-6 received bomb with 251 seconds left!
-7 received bomb with 250 seconds left!
-5 received bomb with 249 seconds left!
-6 received bomb with 248 seconds left!
-0 received bomb with 247 seconds left!
-6 received bomb with 246 seconds left!
-1 received bomb with 244 seconds left!
-4 received bomb with 245 seconds left!
-6 received bomb with 240 seconds left!
-2 received bomb with 242 seconds left!
-1 received bomb with 239 seconds left!
-3 received bomb with 238 seconds left!
-4 received bomb with 243 seconds left!
-4 received bomb with 241 seconds left!
-3 received bomb with 232 seconds left!
-6 received bomb with 234 seconds left!
-6 received bomb with 231 seconds left!
-6 received bomb with 227 seconds left!
-6 received bomb with 225 seconds left!
-8 received bomb with 236 seconds left!
-8 received bomb with 228 seconds left!
-8 received bomb with 219 seconds left!
-2 received bomb with 233 seconds left!
-1 received bomb with 226 seconds left!
-1 received bomb with 220 seconds left!
-7 received bomb with 235 seconds left!
-7 received bomb with 230 seconds left!
-7 received bomb with 222 seconds left!
-7 received bomb with 217 seconds left!
-0 received bomb with 229 seconds left!
-5 received bomb with 237 seconds left!
-5 received bomb with 224 seconds left!
-5 received bomb with 218 seconds left!
-4 received bomb with 223 seconds left!
-4 received bomb with 221 seconds left!
-5 received bomb with 214 seconds left!
-6 received bomb with 213 seconds left!
-6 received bomb with 210 seconds left!
-6 received bomb with 206 seconds left!
-6 received bomb with 203 seconds left!
-8 received bomb with 204 seconds left!
-2 received bomb with 211 seconds left!
-2 received bomb with 205 seconds left!
-2 received bomb with 202 seconds left!
-1 received bomb with 216 seconds left!
-7 received bomb with 212 seconds left!
-7 received bomb with 207 seconds left!
-9 received bomb with 209 seconds left!
-4 received bomb with 215 seconds left!
-4 received bomb with 208 seconds left!
-4 received bomb with 201 seconds left!
-9 received bomb with 200 seconds left!
-9 received bomb with 191 seconds left!
-9 received bomb with 189 seconds left!
-3 received bomb with 199 seconds left!
-5 received bomb with 195 seconds left!
-6 received bomb with 194 seconds left!
-6 received bomb with 190 seconds left!
-8 received bomb with 193 seconds left!
-8 received bomb with 188 seconds left!
-2 received bomb with 186 seconds left!
-1 received bomb with 197 seconds left!
-7 received bomb with 198 seconds left!
-7 received bomb with 196 seconds left!
-7 received bomb with 192 seconds left!
-7 received bomb with 187 seconds left!
-7 received bomb with 185 seconds left!
-4 received bomb with 181 seconds left!
-4 received bomb with 175 seconds left!
-9 received bomb with 182 seconds left!
-9 received bomb with 171 seconds left!
-9 received bomb with 169 seconds left!
-5 received bomb with 179 seconds left!
-6 received bomb with 183 seconds left!
-6 received bomb with 173 seconds left!
-6 received bomb with 168 seconds left!
-8 received bomb with 177 seconds left!
-2 received bomb with 184 seconds left!
-2 received bomb with 180 seconds left!
-2 received bomb with 174 seconds left!
-0 received bomb with 176 seconds left!
-0 received bomb with 167 seconds left!
-7 received bomb with 178 seconds left!
-7 received bomb with 172 seconds left!
-7 received bomb with 170 seconds left!
-7 received bomb with 166 seconds left!
-0 received bomb with 165 seconds left!
-0 received bomb with 163 seconds left!
-0 received bomb with 160 seconds left!
-4 received bomb with 153 seconds left!
-5 received bomb with 162 seconds left!
-6 received bomb with 164 seconds left!
-6 received bomb with 159 seconds left!
-6 received bomb with 150 seconds left!
-8 received bomb with 154 seconds left!
-8 received bomb with 152 seconds left!
-2 received bomb with 158 seconds left!
-2 received bomb with 156 seconds left!
-1 received bomb with 151 seconds left!
-7 received bomb with 161 seconds left!
-7 received bomb with 157 seconds left!
-7 received bomb with 155 seconds left!
-1 received bomb with 130 seconds left!
-0 received bomb with 147 seconds left!
-0 received bomb with 142 seconds left!
-0 received bomb with 133 seconds left!
-0 received bomb with 131 seconds left!
-9 received bomb with 144 seconds left!
-9 received bomb with 138 seconds left!
-4 received bomb with 145 seconds left!
-4 received bomb with 139 seconds left!
-4 received bomb with 136 seconds left!
-4 received bomb with 134 seconds left!
-4 received bomb with 132 seconds left!
-5 received bomb with 143 seconds left!
-5 received bomb with 140 seconds left!
-6 received bomb with 137 seconds left!
-8 received bomb with 149 seconds left!
-2 received bomb with 148 seconds left!
-7 received bomb with 146 seconds left!
-7 received bomb with 141 seconds left!
-7 received bomb with 135 seconds left!
-2 received bomb with 125 seconds left!
-2 received bomb with 123 seconds left!
-1 received bomb with 128 seconds left!
-1 received bomb with 122 seconds left!
-1 received bomb with 113 seconds left!
-4 received bomb with 124 seconds left!
-4 received bomb with 120 seconds left!
-4 received bomb with 117 seconds left!
-4 received bomb with 114 seconds left!
-5 received bomb with 129 seconds left!
-5 received bomb with 126 seconds left!
-5 received bomb with 116 seconds left!
-6 received bomb with 127 seconds left!
-6 received bomb with 118 seconds left!
-6 received bomb with 115 seconds left!
-8 received bomb with 119 seconds left!
-7 received bomb with 121 seconds left!
-7 received bomb with 112 seconds left!
-2 received bomb with 109 seconds left!
-2 received bomb with 94 seconds left!
-3 received bomb with 105 seconds left!
-3 received bomb with 103 seconds left!
-3 received bomb with 100 seconds left!
-0 received bomb with 110 seconds left!
-0 received bomb with 102 seconds left!
-0 received bomb with 98 seconds left!
-0 received bomb with 96 seconds left!
-9 received bomb with 92 seconds left!
-1 received bomb with 111 seconds left!
-1 received bomb with 107 seconds left!
-1 received bomb with 95 seconds left!
-4 received bomb with 106 seconds left!
-4 received bomb with 99 seconds left!
-6 received bomb with 108 seconds left!
-6 received bomb with 101 seconds left!
-7 received bomb with 104 seconds left!
-7 received bomb with 97 seconds left!
-7 received bomb with 93 seconds left!
-6 received bomb with 84 seconds left!
-6 received bomb with 79 seconds left!
-2 received bomb with 81 seconds left!
-0 received bomb with 87 seconds left!
-0 received bomb with 83 seconds left!
-9 received bomb with 90 seconds left!
-9 received bomb with 88 seconds left!
-9 received bomb with 78 seconds left!
-9 received bomb with 76 seconds left!
-1 received bomb with 80 seconds left!
-1 received bomb with 75 seconds left!
-5 received bomb with 86 seconds left!
-4 received bomb with 77 seconds left!
-7 received bomb with 91 seconds left!
-7 received bomb with 89 seconds left!
-7 received bomb with 85 seconds left!
-7 received bomb with 82 seconds left!
-7 received bomb with 74 seconds left!
-4 received bomb with 68 seconds left!
-6 received bomb with 61 seconds left!
-3 received bomb with 73 seconds left!
-2 received bomb with 66 seconds left!
-9 received bomb with 67 seconds left!
-9 received bomb with 62 seconds left!
-9 received bomb with 60 seconds left!
-1 received bomb with 72 seconds left!
-1 received bomb with 70 seconds left!
-1 received bomb with 63 seconds left!
-5 received bomb with 71 seconds left!
-5 received bomb with 65 seconds left!
-7 received bomb with 69 seconds left!
-7 received bomb with 64 seconds left!
-8 received bomb with 47 seconds left!
-8 received bomb with 42 seconds left!
-5 received bomb with 50 seconds left!
-6 received bomb with 58 seconds left!
-6 received bomb with 53 seconds left!
-6 received bomb with 45 seconds left!
-3 received bomb with 44 seconds left!
-2 received bomb with 55 seconds left!
-2 received bomb with 52 seconds left!
-2 received bomb with 43 seconds left!
-9 received bomb with 57 seconds left!
-9 received bomb with 51 seconds left!
-9 received bomb with 49 seconds left!
-1 received bomb with 56 seconds left!
-7 received bomb with 59 seconds left!
-7 received bomb with 54 seconds left!
-7 received bomb with 48 seconds left!
-7 received bomb with 46 seconds left!
-1 received bomb with 41 seconds left!
-8 received bomb with 30 seconds left!
-8 received bomb with 25 seconds left!
-8 received bomb with 18 seconds left!
-4 received bomb with 21 seconds left!
-5 received bomb with 34 seconds left!
-5 received bomb with 29 seconds left!
-0 received bomb with 32 seconds left!
-0 received bomb with 27 seconds left!
-0 received bomb with 23 seconds left!
-2 received bomb with 40 seconds left!
-2 received bomb with 38 seconds left!
-2 received bomb with 36 seconds left!
-2 received bomb with 33 seconds left!
-2 received bomb with 28 seconds left!
-2 received bomb with 26 seconds left!
-2 received bomb with 22 seconds left!
-9 received bomb with 39 seconds left!
-9 received bomb with 37 seconds left!
-9 received bomb with 31 seconds left!
-9 received bomb with 20 seconds left!
-7 received bomb with 35 seconds left!
-7 received bomb with 24 seconds left!
-7 received bomb with 19 seconds left!
-9 received bomb with 17 seconds left!
-9 received bomb with 6 seconds left!
-9 received bomb with 4 seconds left!
-8 received bomb with 15 seconds left!
-8 received bomb with 12 seconds left!
-4 received bomb with 10 seconds left!
-4 received bomb with 2 seconds left!
-6 received bomb with 9 seconds left!
-5 received bomb with 13 seconds left!
-5 received bomb with 7 seconds left!
-0 received bomb with 16 seconds left!
-0 received bomb with 5 seconds left!
-2 received bomb with 14 seconds left!
-2 received bomb with 11 seconds left!
-2 received bomb with 3 seconds left!
-2 received bomb with 1 seconds left!
-2 loses!
-7 received bomb with 8 seconds left!
+1
+2
+2
+5
+6
+6
+6
+7
+9
+10
+13
+13
+13
+13
+14
+17
+17
+20
+20
+20
+23
+24
+24
+26
+26
+26
+27
+27
+28
+29
+30
+31
+33
+35
+35
+35
+37
+38
+39
+39
+40
+41
+41
+41
+43
+43
+44
+46
+49
+50
+50
+50
+51
+51
+52
+52
+54
+55
+56
+58
+59
+60
+61
+63
 \end{lstlisting}
 
 \end{document}
