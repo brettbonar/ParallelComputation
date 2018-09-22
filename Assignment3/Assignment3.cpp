@@ -16,14 +16,14 @@ int main(int argc, char **argv){
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
 
-  int length = 1024;
+  int length = 64;
   int sortSize = length / size;
 
   std::vector<int> fullList(length);
   std::vector<int> sortList(sortSize);
   if (rank == 0)
   {
-    for (int i = 0; i < 1024; i++)
+    for (int i = 0; i < length; i++)
     {
       fullList[i] = std::rand() % length;
     }
@@ -35,7 +35,13 @@ int main(int argc, char **argv){
 
   MPI_Gather(sortList.data(), sortSize, MPI_INT, fullList.data(), sortSize, MPI_INT, 0, MCW);
 
-  std::cerr << "Gathered" << std::endl;
+  if (rank == 0)
+  {
+    for (int i = 0; i < length; i++)
+    {
+      std::cerr << fullList[i] << std::endl;
+    }
+  }
 
   MPI_Finalize();
 
