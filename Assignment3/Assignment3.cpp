@@ -4,6 +4,7 @@
 #include <time.h>
 #include <algorithm>
 #include <vector>
+#include <limits> 
 #define MCW MPI_COMM_WORLD
 
 using namespace std;
@@ -38,11 +39,7 @@ int main(int argc, char **argv){
 
   if (rank == 0)
   {
-    // Init sorted list with first sublist
-    // for (int i = 0; i < sortSize; i++)
-    // {
-    //   sortedList[i] = aggregateList[i];
-    // }
+    std::fill(sortedList.begin(), sortedList.end(), std::numeric_limits<int>::max());
 
     // Aggregate list will contain size sublists of length sortSize
     for (int i = 0; i < length; i += sortSize)
