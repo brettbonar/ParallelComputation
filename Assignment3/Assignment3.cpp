@@ -17,25 +17,26 @@ int main(int argc, char **argv){
   MPI_Comm_size(MCW, &size);
 
   int length = 1024;
+  int sortSize = length / size;
 
-  std::array<int, length> inputList;
-  std::array<int, length / size> sortList;
+  std::array<int, length> fullList;
+  std::array<int, sortSize> sortList;
   if (rank == 0)
   {
     for (int i = 0; i < 1024; i++)
     {
-      list[i] = std::rand() % length;
+      fullList[i] = std::rand() % length;
     }
   }
   
-  MPI_Scatter(inputList.data(), length / size, MPI_INT, sortList.data(), length / size, MPI_INT, 0, MCW);
+  MPI_Scatter(fullList.data(), sortSize, MPI_INT, sortList.data(), sortSize, MPI_INT, 0, MCW);
 
   std::sort(sortList.begin(), sortList.end());
 
-  int MPI_Gather(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-               void *recvbuf, int recvcnt, MPI_Datatype recvtype, 
-               int root, MPI_Comm comm)
-               
+  MPI_Gather(sortList.data(), sortSize, MPI_INT, fullList.data(), sortSize, MPI_INT, 0, MCW);
+
+  std::cerr << "Gathered" << std::endl;
+
   MPI_Finalize();
 
   return 0;
