@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <algorithm>
-#include <array>
+#include <vector>
 #define MCW MPI_COMM_WORLD
 
 using namespace std;
@@ -19,8 +19,8 @@ int main(int argc, char **argv){
   int length = 1024;
   int sortSize = length / size;
 
-  std::array<int, length> fullList;
-  std::array<int, sortSize> sortList;
+  std::vector<int> fullList(length);
+  std::vector<int> sortList(sortSize);
   if (rank == 0)
   {
     for (int i = 0; i < 1024; i++)
