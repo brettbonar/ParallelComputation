@@ -56,13 +56,13 @@ int main(int argc, char **argv){
           pos++;
         }
 
-        sortedList.insert(sortedList.begin() + pos, aggregateList[i + j]);
+        //sortedList.insert(sortedList.begin() + pos, aggregateList[i + j]);
       }
     }
 
     for (int i = 0; i < length; i++)
     {
-      std::cerr << sortedList[i] << std::endl;
+      std::cout << sortedList[i] << std::endl;
     }
   }
 
