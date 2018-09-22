@@ -51,12 +51,9 @@ int main(int argc, char **argv){
       // Iterate over each item in sublist
       for (int j = 0; j < sortSize; j++)
       {
-        while (aggregateList[i + j] > sortedList[pos] && pos < i)
-        {
-          pos++;
-        }
-
-        //sortedList.insert(sortedList.begin() + pos, aggregateList[i + j]);
+        sortedList.insert(
+          std::upper_bound(sortedList.begin(), sortedList.end(), aggregateList[i + j]),
+          aggregateList[i + j]);
       }
     }
 
