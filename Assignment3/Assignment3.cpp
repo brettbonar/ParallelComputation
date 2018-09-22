@@ -53,7 +53,7 @@ int main(int argc, char **argv){
           sortedList.end(),
           aggregateList[i + j]);
 
-        sortedList.insert(post, aggregateList[i + j]);
+        sortedList.insert(pos, aggregateList[i + j]);
       }
     }
 
