@@ -45,15 +45,14 @@ int main(int argc, char **argv){
     for (int i = 0; i < length; i += sortSize)
     {
       // Iterate over each item in sublist
-      auto pos = sortedList.begin();
       for (int j = 0; j < sortSize; j++)
       {
-        pos = std::upper_bound(
-          pos,
-          sortedList.end(),
-          aggregateList[i + j]);
-
-        sortedList.insert(pos, aggregateList[i + j]);
+        sortedList.insert(
+          std::upper_bound(
+            sortedList.begin(),
+            sortedList.end(),
+            aggregateList[i + j]),
+        aggregateList[i + j]);
       }
     }
 
