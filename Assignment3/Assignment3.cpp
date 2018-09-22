@@ -39,15 +39,14 @@ int main(int argc, char **argv){
   if (rank == 0)
   {
     // Init sorted list with first sublist
-    for (int i = 0; i < sortSize; i++)
-    {
-      sortedList[i] = aggregateList[i];
-    }
+    // for (int i = 0; i < sortSize; i++)
+    // {
+    //   sortedList[i] = aggregateList[i];
+    // }
 
     // Aggregate list will contain size sublists of length sortSize
-    for (int i = sortSize; i < length; i += sortSize)
+    for (int i = 0; i < length; i += sortSize)
     {
-      int pos = 0;
       // Iterate over each item in sublist
       for (int j = 0; j < sortSize; j++)
       {
