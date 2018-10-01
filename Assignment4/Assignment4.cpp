@@ -10,6 +10,9 @@
 using namespace std;
 
 void bitonicSort()
+{
+  
+}
 
 int main(int argc, char **argv){
   int rank, size;
