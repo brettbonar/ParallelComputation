@@ -60,10 +60,10 @@ int main(int argc, char **argv){
   double rinc;
   double iinc;
   int iters;
-  c1.r = -3.0;
-  c2.r = 1.0;
+  c1.r = -2.0;
+  c2.r = 0.0;
   c1.i = 1.0;
-  c2.i = -3.0;
+  c2.i = -1.0;
 
   cdiff = c2-c1;
   rinc = cdiff.r/PIXELS;
