@@ -9,9 +9,12 @@
 
 using namespace std;
 
-void bitonicSort()
+std::vector<int> sort(bool down, const std::vector<int>& sortList)
 {
-  
+  if (sortList.size() <= 1)
+  {
+    sortList = localSort(down, sortList);
+  }
 }
 
 int main(int argc, char **argv){
@@ -22,11 +25,10 @@ int main(int argc, char **argv){
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
 
-  int length = 64;
+  int length = 16;
   int sortSize = length / size;
 
-  std::vector<int> sortedList;
-  std::vector<int> aggregateList(length);
+  std::vector<int> bitonicList(length);
   std::vector<int> sortList(sortSize);
   if (rank == 0)
   {
@@ -38,25 +40,25 @@ int main(int argc, char **argv){
         num--;
       }
 
-      aggregateList[i] = num;
+      bitonicList[i] = num;
 
       num += i < length / 2 ? 2 : -2;
     }
   }
   
-  // MPI_Scatter(aggregateList.data(), sortSize, MPI_INT,
-  //   sortList.data(), sortSize, MPI_INT, 0, MCW);
+  MPI_Scatter(bitonicList.data(), sortSize, MPI_INT,
+    sortList.data(), sortSize, MPI_INT, 0, MCW);
+    
+  sortList = sort(rank % 2 === 0, sortList);
 
-  // std::sort(sortList.begin(), sortList.end());
-
-  // MPI_Gather(sortList.data(), sortSize, MPI_INT,
-  //   aggregateList.data(), sortSize, MPI_INT, 0, MCW);
+  MPI_Gather(sortList.data(), sortSize, MPI_INT,
+    bitonicList.data(), sortSize, MPI_INT, 0, MCW);
 
   if (rank == 0)
   {
     for (int i = 0; i < length; i++)
     {
-      std::cout << aggregateList[i] << std::endl;
+      std::cout << bitonicList[i] << std::endl;
     }
   }
 
