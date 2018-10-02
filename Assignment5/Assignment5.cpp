@@ -63,7 +63,7 @@ int main(int argc, char **argv){
   c1.r = -3.0;
   c2.r = 1.0;
   c1.i = 1.0;
-  c2.i = -2.0;
+  c2.i = -3.0;
 
   cdiff = c2-c1;
   rinc = cdiff.r/PIXELS;
