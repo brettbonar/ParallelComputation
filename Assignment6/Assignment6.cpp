@@ -69,7 +69,7 @@ int main(int argc, char **argv){
   int rowsPerProcess = PIXELS / size;
   int numLocalColors = PIXELS * PIXELS * 3 / size;
   int numGlobalColors = PIXELS * PIXELS * 3;
-  std::vector<int> localColors(numLocalColors);
+  std::vector<int> localColors;
   std::vector<int> globalColors(numGlobalColors);
 
   cout << "Rows Per Process: " << rowsPerProcess << endl;
@@ -101,9 +101,9 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      localColors[row * PIXELS + j] = r;
-      localColors[row * PIXELS + j + 1] = g;
-      localColors[row * PIXELS + j + 2] = b;
+      localColors.push_back(r);
+      localColors.push_back(g);
+      localColors.push_back(b);
     }
   }
 
