@@ -101,9 +101,9 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      localColors[row * PIXELS + j] = r;
-      localColors[row * PIXELS + j + 1] = g;
-      localColors[row * PIXELS + j + 2] = b;
+      localColors[row * PIXELS + j * 3] = r;
+      localColors[row * PIXELS + j * 3 + 1] = g;
+      localColors[row * PIXELS + j * 3 + 2] = b;
     }
   }
 
@@ -125,9 +125,9 @@ int main(int argc, char **argv){
     {
       for(int j = 0; j < PIXELS; ++j)
       {
-        cout << globalColors[i * PIXELS + j] << " ";
-        cout << globalColors[i * PIXELS + j + 1] << " ";
-        cout << globalColors[i * PIXELS + j + 2] << " ";
+        cout << globalColors[i * PIXELS + j * 3] << " ";
+        cout << globalColors[i * PIXELS + j * 3 + 1] << " ";
+        cout << globalColors[i * PIXELS + j * 3 + 2] << " ";
       }
       cout << endl;
     }
