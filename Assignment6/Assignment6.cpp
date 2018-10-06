@@ -110,7 +110,7 @@ int main(int argc, char **argv){
   //cout << "Gather S: " << rank << ", Size: " << localColors.size() << endl;
 
   MPI_Gather(localColors.data(), numLocalColors, MPI_INT,
-    globalColors.data(), numGlobalColors, MPI_INT, 0, MCW);
+    globalColors.data(), numLocalColors, MPI_INT, 0, MCW);
 
   //cout << "Gather D: " << rank << endl;
 
