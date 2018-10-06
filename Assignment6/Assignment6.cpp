@@ -1,17 +1,11 @@
 #include <iostream>
 #include <unistd.h>
 #include <cmath>
-//#include "/usr/local/include/mpi.h"
+#include <mpi.h>
 #define MCW MPI_COMM_WORLD
 #define PIXELS 512
 
 using namespace std;
-
-void printColor(int i){
-  cout << r << " ";
-  cout << g << " ";
-  cout << b << " ";  
-}
 
 struct Complex{
   double r;
