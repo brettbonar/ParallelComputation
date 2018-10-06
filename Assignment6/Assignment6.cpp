@@ -83,36 +83,35 @@ int main(int argc, char **argv){
   {
     for(int j = 0; j < PIXELS; ++j)
     {
-      cout << "1" << endl;
       cx.i = c1.i + j * iinc;
       cx.r = c1.r + i * rinc;
       iters = mbrot_iters(cx);
       
-      cout << "2" << endl;
       int r,g,b;
-      r = (log(iters) / log(1024)) * 255;
-      g = 0;
-      b = 0;
       if (iters == 1024)
       {
         r = 0;
         g = 0;
         b = 0;
       }
+      else
+      {
+        r = (log(iters) / log(1024)) * 255;
+        g = 0;
+        b = 0;
+      }
 
-      cout << "3" << endl;
       localColors.push_back(r);
       localColors.push_back(g);
       localColors.push_back(b);
-      cout << "4" << endl;
     }
   }
 
-      cout << "5" << endl;
+  cout << "Gather: " << rank << endl;
+
   MPI_Gather(localColors.data(), numLocalPixels, MPI_INT,
     globalColors.data(), numGlobalPixels, MPI_INT, 0, MCW);
 
-      cout << "6" << endl;
   if (rank == 0)
   {
     for (auto&& color : globalColors)
@@ -122,5 +121,7 @@ int main(int argc, char **argv){
     cout << endl;
   }
   
+  MPI_Finalize();
+
   return 0;
 }
