@@ -109,8 +109,8 @@ int main(int argc, char **argv){
 
   cout << "Gather: " << rank << endl;
 
-  MPI_Gather(localColors.data(), numLocalPixels, MPI_INT,
-    globalColors.data(), numGlobalPixels, MPI_INT, 0, MCW);
+  MPI_Gather(localColors.data(), numLocalPixels * 3, MPI_INT,
+    globalColors.data(), numGlobalPixels * 3, MPI_INT, 0, MCW);
 
   if (rank == 0)
   {
