@@ -67,14 +67,14 @@ int main(int argc, char **argv){
   iinc = cdiff.i / PIXELS;
 
   int rowsPerProcess = PIXELS / size;
-  int numGlobalPixels = PIXELS * PIXELS;
-  int numLocalPixels = rowsPerProcess * PIXELS;
-  std::vector<int> localColors(numLocalPixels * 3);
-  std::vector<int> globalColors(numGlobalPixels * 3);
+  int numLocalColors = PIXELS * PIXELS * 3 / size;
+  int numGlobalColors = PIXELS * PIXELS * 3;
+  std::vector<int> localColors(numLocalColors);
+  std::vector<int> globalColors(numGlobalColors);
 
   cout << "Rows Per Process: " << rowsPerProcess << endl;
-  cout << "Local Colors: " << numLocalPixels << endl;
-  cout << "Global Colors: " << numGlobalPixels << endl;
+  cout << "Local Colors: " << numLocalColors << endl;
+  cout << "Global Colors: " << numGlobalColors << endl;
 
   cout << "Start: " << rank * rowsPerProcess << endl;
   cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
@@ -109,8 +109,8 @@ int main(int argc, char **argv){
 
   cout << "Gather S: " << rank << endl;
 
-  // MPI_Gather(localColors.data(), numLocalPixels * 3, MPI_INT,
-  //   globalColors.data(), numGlobalPixels * 3, MPI_INT, 0, MCW);
+  MPI_Gather(localColors.data(), numLocalColors, MPI_INT,
+    globalColors.data(), numGlobalColors, MPI_INT, 0, MCW);
 
   cout << "Gather D: " << rank << endl;
 
