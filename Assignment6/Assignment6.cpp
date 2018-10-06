@@ -69,15 +69,15 @@ int main(int argc, char **argv){
   int rowsPerProcess = PIXELS / size;
   int numLocalColors = PIXELS * PIXELS * 3 / size;
   int numGlobalColors = PIXELS * PIXELS * 3;
-  std::vector<int> localColors;
+  std::vector<int> localColors(numLocalColors);
   std::vector<int> globalColors(numGlobalColors);
 
-  cout << "Rows Per Process: " << rowsPerProcess << endl;
-  cout << "Local Colors: " << numLocalColors << endl;
-  cout << "Global Colors: " << numGlobalColors << endl;
+  // cout << "Rows Per Process: " << rowsPerProcess << endl;
+  // cout << "Local Colors: " << numLocalColors << endl;
+  // cout << "Global Colors: " << numGlobalColors << endl;
 
-  cout << "Start: " << rank * rowsPerProcess << endl;
-  cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
+  // cout << "Start: " << rank * rowsPerProcess << endl;
+  // cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
 
   for(int i = rank * rowsPerProcess, row = 0; i < rank * rowsPerProcess + rowsPerProcess; ++i, ++row)
   {
@@ -101,18 +101,18 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      localColors.push_back(r);
-      localColors.push_back(g);
-      localColors.push_back(b);
+      localColors[row * PIXELS + j] = r;
+      localColors[row * PIXELS + j + 1] = g;
+      localColors[row * PIXELS + j + 2] = b;
     }
   }
 
-  cout << "Gather S: " << rank << ", Size: " << localColors.size() << endl;
+  //cout << "Gather S: " << rank << ", Size: " << localColors.size() << endl;
 
   MPI_Gather(localColors.data(), numLocalColors, MPI_INT,
     globalColors.data(), numGlobalColors, MPI_INT, 0, MCW);
 
-  cout << "Gather D: " << rank << endl;
+  //cout << "Gather D: " << rank << endl;
 
   if (rank == 0)
   {
