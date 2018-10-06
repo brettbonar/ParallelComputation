@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <cmath>
 #include <mpi.h>
+#include <vector>
 #define MCW MPI_COMM_WORLD
 #define PIXELS 512
 
