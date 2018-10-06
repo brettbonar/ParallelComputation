@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <cmath>
 #include <mpi.h>
+#include <string>
 #include <vector>
 #define MCW MPI_COMM_WORLD
 
@@ -55,7 +56,7 @@ int main(int argc, char **argv){
 
   if (argc > 1)
   {
-    PIXELS = std::to_integer(argv[1]);
+    PIXELS = std::stoi(argv[1]);
   }
 
   Complex c1,c2,cx,cdiff;
