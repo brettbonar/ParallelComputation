@@ -124,9 +124,9 @@ int main(int argc, char **argv){
     cout << endl;
   }
   
-  cout << "Finalize: " << rank << endl;
+  //cout << "Finalize: " << rank << endl;
   MPI_Finalize();
-  cout << "Done: " << rank << endl;
+  //cout << "Done: " << rank << endl;
 
   return 0;
 }
