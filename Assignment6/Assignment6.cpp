@@ -116,6 +116,7 @@ int main(int argc, char **argv){
 
   if (rank == 0)
   {
+    cout << "Printing colors" << endl;
     for (auto&& color : globalColors)
     {
       cout << color << " ";
@@ -123,7 +124,9 @@ int main(int argc, char **argv){
     cout << endl;
   }
   
+  cout << "Finalize: " << rank << endl;
   MPI_Finalize();
+  cout << "Done: " << rank << endl;
 
   return 0;
 }
