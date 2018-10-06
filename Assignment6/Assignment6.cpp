@@ -67,8 +67,8 @@ int main(int argc, char **argv){
   iinc = cdiff.i / PIXELS;
 
   int rowsPerProcess = PIXELS / size;
-  int numLocalColors = PIXELS * PIXELS * 3 / size;
-  int numGlobalColors = PIXELS * PIXELS * 3;
+  int numLocalColors = PIXELS * PIXELS / size;
+  int numGlobalColors = PIXELS * PIXELS;
   std::vector<int> localColors(numLocalColors);
   std::vector<int> globalColors(numGlobalColors);
 
@@ -101,9 +101,10 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      localColors[row * PIXELS + j * 3] = r;
-      localColors[row * PIXELS + j * 3 + 1] = g;
-      localColors[row * PIXELS + j * 3 + 2] = b;
+      int pixel = r;
+      r = (r << 8) + g;
+      r = (r << 8) + b;
+      localColors[row * PIXELS + j] = pixel;
     }
   }
 
@@ -125,9 +126,10 @@ int main(int argc, char **argv){
     {
       for(int j = 0; j < PIXELS; ++j)
       {
-        cout << globalColors[i * PIXELS + j * 3] << " ";
-        cout << globalColors[i * PIXELS + j * 3 + 1] << " ";
-        cout << globalColors[i * PIXELS + j * 3 + 2] << " ";
+        int red = (globalColors[i * PIXELS + j] >> 16) & 0xFF;
+        int green = (globalColors[i * PIXELS + j] >> 8) & 0xFF;
+        int blue = globalColors[i * PIXELS + j] & 0xFF;
+        cout << red << " " << green << " " << blue << " ";
       }
       cout << endl;
     }
