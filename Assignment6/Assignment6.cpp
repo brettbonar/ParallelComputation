@@ -73,9 +73,12 @@ int main(int argc, char **argv){
   std::vector<int> globalColors(numGlobalPixels * 3);
 
   cout << "Rows Per Process: " << rowsPerProcess << endl;
-  cout << "Local Pixels: " << numLocalPixels << endl;
-  cout << "Global Pixels: " << numGlobalPixels << endl;
+  cout << "Local Colors: " << numLocalPixels << endl;
+  cout << "Global Colors: " << numGlobalPixels << endl;
 
+  cout << "Start: " << rank * rowsPerProcess << endl;
+  cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
+  
   for(int i = rank * rowsPerProcess; i < rank * rowsPerProcess + rowsPerProcess; ++i)
   {
     for(int j = 0; j < PIXELS; ++j)
