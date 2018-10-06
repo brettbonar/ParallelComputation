@@ -79,7 +79,7 @@ int main(int argc, char **argv){
   cout << "Start: " << rank * rowsPerProcess << endl;
   cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
 
-  for(int i = rank * rowsPerProcess, row = 0 i < rank * rowsPerProcess + rowsPerProcess; ++i, ++row)
+  for(int i = rank * rowsPerProcess, row = 0; i < rank * rowsPerProcess + rowsPerProcess; ++i, ++row)
   {
     for(int j = 0; j < PIXELS; ++j)
     {
