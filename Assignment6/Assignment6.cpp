@@ -91,7 +91,7 @@ int main(int argc, char **argv){
       {
         r = (log(iters) / log(1024)) * 255;
         g = 0;
-        b = 0;
+        b = 255 - (log(iters) / log(1024)) * 255;
       }
 
       localColors[row * PIXELS + j] = (r << 16) + (g << 8) + b;
