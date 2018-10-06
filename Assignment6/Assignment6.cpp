@@ -72,13 +72,6 @@ int main(int argc, char **argv){
   std::vector<int> localColors(numLocalColors);
   std::vector<int> globalColors(numGlobalColors);
 
-  // cout << "Rows Per Process: " << rowsPerProcess << endl;
-  // cout << "Local Colors: " << numLocalColors << endl;
-  // cout << "Global Colors: " << numGlobalColors << endl;
-
-  // cout << "Start: " << rank * rowsPerProcess << endl;
-  // cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
-
   for(int i = rank * rowsPerProcess, row = 0; i < rank * rowsPerProcess + rowsPerProcess; ++i, ++row)
   {
     for(int j = 0; j < PIXELS; ++j)
@@ -101,23 +94,15 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      int pixel = r;
-      r = (r << 8) + g;
-      r = (r << 8) + b;
-      localColors[row * PIXELS + j] = pixel;
+      localColors[row * PIXELS + j] = (r << 16) + (g << 8) + b;
     }
   }
-
-  //cout << "Gather S: " << rank << ", Size: " << localColors.size() << endl;
 
   MPI_Gather(localColors.data(), numLocalColors, MPI_INT,
     globalColors.data(), numLocalColors, MPI_INT, 0, MCW);
 
-  //cout << "Gather D: " << rank << endl;
-
   if (rank == 0)
   {
-    //cout << "Printing colors" << endl;
     cout << "P3" <<endl;
     cout << PIXELS << " " << PIXELS << endl;
     cout << "255" <<endl;
@@ -135,9 +120,7 @@ int main(int argc, char **argv){
     }
   }
   
-  //cout << "Finalize: " << rank << endl;
   MPI_Finalize();
-  //cout << "Done: " << rank << endl;
 
   return 0;
 }
