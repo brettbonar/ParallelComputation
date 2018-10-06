@@ -4,7 +4,6 @@
 #include <mpi.h>
 #include <vector>
 #define MCW MPI_COMM_WORLD
-#define PIXELS 1024
 
 using namespace std;
 
@@ -48,10 +47,16 @@ int mbrot_iters(Complex c){
 int main(int argc, char **argv){
   int rank, size;
   int data;
+  int PIXELS = 512;
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
+
+  if (argc > 1)
+  {
+    PIXELS = argv[1];
+  }
 
   Complex c1,c2,cx,cdiff;
   double rinc;
