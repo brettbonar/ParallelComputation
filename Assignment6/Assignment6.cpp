@@ -66,17 +66,17 @@ int main(int argc, char **argv){
   rinc = cdiff.r / PIXELS;
   iinc = cdiff.i / PIXELS;
 
-  cout << "P3" <<endl;
-  cout << PIXELS << " " << PIXELS << endl;
-  cout << "255" <<endl;
-
   int rowsPerProcess = PIXELS / size;
   int numLocalPixels = rowsPerProcess * PIXELS;
   int numGlobalPixels = PIXELS * PIXELS;
-  std::vector<int> localColors(numLocalPixels);
-  std::vector<int> globalColors(numGlobalPixels);
+  std::vector<int> localColors(numLocalPixels * 3);
+  std::vector<int> globalColors(numGlobalPixels * 3);
 
-  for(int i = 0; i < rowsPerProcess; ++i)
+  cout << "Rows Per Process: " << rowsPerProcess << endl;
+  cout << "Local Pixels: " << numLocalPixels << endl;
+  cout << "Global Pixels: " << numGlobalPixels << endl;
+
+  for(int i = rank * rowsPerProcess; i < rank * rowsPerProcess + rowsPerProcess; ++i)
   {
     for(int j = 0; j < PIXELS; ++j)
     {
