@@ -4,7 +4,7 @@
 #include <mpi.h>
 #include <vector>
 #define MCW MPI_COMM_WORLD
-#define PIXELS 512
+#define PIXELS 1024
 
 using namespace std;
 
