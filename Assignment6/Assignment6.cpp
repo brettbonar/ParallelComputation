@@ -79,7 +79,7 @@ int main(int argc, char **argv){
   cout << "Start: " << rank * rowsPerProcess << endl;
   cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
 
-  for(int i = rank * rowsPerProcess; i < rank * rowsPerProcess + rowsPerProcess; ++i)
+  for(int i = rank * rowsPerProcess, row = 0 i < rank * rowsPerProcess + rowsPerProcess; ++i, ++row)
   {
     for(int j = 0; j < PIXELS; ++j)
     {
@@ -101,9 +101,9 @@ int main(int argc, char **argv){
         b = 0;
       }
 
-      localColors[i * PIXELS + j] = r;
-      localColors[i * PIXELS + j + 1] = g;
-      localColors[i * PIXELS + j + 2] = b;
+      localColors[row * PIXELS + j] = r;
+      localColors[row * PIXELS + j + 1] = g;
+      localColors[row * PIXELS + j + 2] = b;
     }
   }
 
