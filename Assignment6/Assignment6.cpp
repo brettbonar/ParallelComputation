@@ -120,11 +120,17 @@ int main(int argc, char **argv){
     cout << "P3" <<endl;
     cout << PIXELS << " " << PIXELS << endl;
     cout << "255" <<endl;
-    for (auto&& color : globalColors)
+
+    for(int i = 0; i < PIXELS; ++i)
     {
-      cout << color << " ";
+      for(int j = 0; j < PIXELS; ++j)
+      {
+        cout << globalColors[i * PIXELS + j] << " ";
+        cout << globalColors[i * PIXELS + j + 1] << " ";
+        cout << globalColors[i * PIXELS + j + 2] << " ";
+      }
+      cout << endl;
     }
-    cout << endl;
   }
   
   //cout << "Finalize: " << rank << endl;
