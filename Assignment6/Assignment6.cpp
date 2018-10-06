@@ -107,10 +107,12 @@ int main(int argc, char **argv){
     }
   }
 
-  cout << "Gather: " << rank << endl;
+  cout << "Gather S: " << rank << endl;
 
-  MPI_Gather(localColors.data(), numLocalPixels * 3, MPI_INT,
-    globalColors.data(), numGlobalPixels * 3, MPI_INT, 0, MCW);
+  // MPI_Gather(localColors.data(), numLocalPixels * 3, MPI_INT,
+  //   globalColors.data(), numGlobalPixels * 3, MPI_INT, 0, MCW);
+
+  cout << "Gather D: " << rank << endl;
 
   if (rank == 0)
   {
