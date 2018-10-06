@@ -69,7 +69,7 @@ int main(int argc, char **argv){
   int rowsPerProcess = PIXELS / size;
   int numLocalPixels = rowsPerProcess * PIXELS;
   int numGlobalPixels = PIXELS * PIXELS;
-  std::vector<int> localColors(numLocalPixels * 3);
+  std::vector<int> localColors;
   std::vector<int> globalColors(numGlobalPixels * 3);
 
   cout << "Rows Per Process: " << rowsPerProcess << endl;
@@ -78,15 +78,17 @@ int main(int argc, char **argv){
 
   cout << "Start: " << rank * rowsPerProcess << endl;
   cout << "End: " << rank * rowsPerProcess + rowsPerProcess << endl;
-  
+
   for(int i = rank * rowsPerProcess; i < rank * rowsPerProcess + rowsPerProcess; ++i)
   {
     for(int j = 0; j < PIXELS; ++j)
     {
+      cout << "1" << endl;
       cx.i = c1.i + j * iinc;
       cx.r = c1.r + i * rinc;
       iters = mbrot_iters(cx);
       
+      cout << "2" << endl;
       int r,g,b;
       r = (log(iters) / log(1024)) * 255;
       g = 0;
@@ -98,15 +100,19 @@ int main(int argc, char **argv){
         b = 0;
       }
 
+      cout << "3" << endl;
       localColors.push_back(r);
       localColors.push_back(g);
       localColors.push_back(b);
+      cout << "4" << endl;
     }
   }
 
+      cout << "5" << endl;
   MPI_Gather(localColors.data(), numLocalPixels, MPI_INT,
     globalColors.data(), numGlobalPixels, MPI_INT, 0, MCW);
 
+      cout << "6" << endl;
   if (rank == 0)
   {
     for (auto&& color : globalColors)
