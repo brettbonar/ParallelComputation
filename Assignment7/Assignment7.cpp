@@ -4,6 +4,7 @@
 #include <mpi.h>
 #include <string>
 #include <vector>
+#include <ctime>
 #define MCW MPI_COMM_WORLD
 
 using namespace std;
@@ -17,6 +18,7 @@ int main(int argc, char **argv){
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
 
+  std::srand(rank * std::time(nullptr));
   int myValue = std::rand() % MAX;
 
   std::cout << "Rank: " << rank << ", Value: " << myValue << std::endl;
