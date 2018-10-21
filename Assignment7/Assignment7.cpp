@@ -23,7 +23,7 @@ int main(int argc, char **argv){
 
   int mySum = myValue;
   int recvSum = 0;
-  int target = rank + 1 % size;
+  int target = (rank + 1) % size;
 
   while (target != rank)
   {
@@ -31,6 +31,7 @@ int main(int argc, char **argv){
     MPI_Recv(&recvSum, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
 
     mySum += recvSum;
+    target = (target + 1) % size;
   }
 
   std::cout << "Rank: " << rank << ", Sum: " << mySum;
