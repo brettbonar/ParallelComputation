@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 
   int myValue = std::rand() % MAX;
 
-  std::cout << "Rank: " << rank << ", Value: " << myValue;
+  std::cout << "Rank: " << rank << ", Value: " << myValue << std::endl;
 
   int mySum = myValue;
   int recvSum = 0;
@@ -34,7 +34,7 @@ int main(int argc, char **argv){
     target = (target + 1) % size;
   }
 
-  std::cout << "Rank: " << rank << ", Sum: " << mySum;
+  std::cout << "Rank: " << rank << ", Sum: " << mySum << std::endl;
   
   MPI_Finalize();
 
