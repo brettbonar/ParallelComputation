@@ -15,8 +15,8 @@ int printWorld(int world[][WORLD_SIZE], int it)
 {
   std::ofstream file;
   file.open(std::to_string(it) + ".pbm");
-  file << "P1" <<endl;
-  file << WORLD_SIZE << " " << WORLD_SIZE << endl;
+  file << "P1" << std::endl;
+  file << WORLD_SIZE << " " << WORLD_SIZE << std::endl;
 
   for(int i = 0; i < WORLD_SIZE; ++i)
   {
