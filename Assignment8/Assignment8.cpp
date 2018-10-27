@@ -24,7 +24,7 @@ int printWorld(int world[][WORLD_SIZE], int it)
     {
       file << world[i][j] << " ";
     }
-    file << endl;
+    file << std::endl;
   }
 }
 
