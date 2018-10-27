@@ -11,10 +11,10 @@
 
 const int WORLD_SIZE = 1024;
 
-int print(int[][] world, int it)
+int printWorld(int[][WORLD_SIZE] world, int it)
 {
   std::ofstream file;
-  ofstream.open(std::to_string(it) + ".pbm");
+  file.open(std::to_string(it) + ".pbm");
   file << "P1" <<endl;
   file << WORLD_SIZE << " " << WORLD_SIZE << endl;
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv){
   //std::srand(rank * std::time(nullptr));
 
   //std::cout << "Rank: " << rank << ", Value: " << myValue << std::endl;
-  print(world, 1);
+  printWorld(world, 1);
 
   
   MPI_Finalize();
