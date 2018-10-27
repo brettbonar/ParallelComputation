@@ -9,7 +9,7 @@
 #include <fstream>
 #define MCW MPI_COMM_WORLD
 
-const WORLD_SIZE = 1024;
+const int WORLD_SIZE = 1024;
 
 int print(int[][] world, int it)
 {
