@@ -28,19 +28,93 @@ int printWorld(int world[][WORLD_SIZE], int it)
   }
 }
 
+int countNeighbors(int world[][WORLD_SIZE], x, y, localSize)
+{
+  int count = 0;
+  if (x > 0)
+  {
+    count += world[x - 1][y];
+  }
+  if (x < localSize - 1)
+  {
+    count += world[x + 1][y];
+  }
+
+  if (y > 0)
+  {
+    count += world[x][y - 1];
+  }
+  if (y < WORLD_SIZE - 1)
+  {
+    count += world[x][y + 1];
+  }
+
+  return count;
+}
+
+int updateCell(int world[][WORLD_SIZE], x, y, localSize)
+{
+  int neighbors = countNeighbors(world, x, y, localSize);
+  if (neighbors <= 1 || neighbors >= 4)
+  {
+    return 0;
+  }
+
+  if (neighbors === 3)
+  {
+    if (world[x][y] === 0)
+    {
+      return 1;
+    }
+    return 0;
+  }
+
+  return 1;
+}
+
+void updateWorld(int world[][WORLD_SIZE], localSize)
+{
+  for (int x = 0; x < localSize; x++)
+  {
+    for (int y = 0; y < WORLD_SIZE; y++)
+    {
+      world[x][y] = updateCell(world, x, y, localSize);
+    }
+  }
+}
+
 int main(int argc, char **argv){
   int rank, size;
   int data;
   int world[WORLD_SIZE][WORLD_SIZE] = {};
-
+  int iterations = 100;
+-
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
 
+  int LOCAL_SIZE = WORLD_SIZE / size;
+
+  if (size > 1)
+  {
+    LOCAL_SIZE++;
+  }
+
+  if (rank > 0 && rank < size - 1)
+  {
+    LOCAL_SIZE++;
+  }
+  int localWorld[LOCAL_SIZE][WORLD_SIZE] = {};
+
+  for (int i = 0; i < iterations; i++)
+  {
+    updateWorld(localWorld, localSize);
+  printWorld(world, i);
+  }
+
   //std::srand(rank * std::time(nullptr));
 
   //std::cout << "Rank: " << rank << ", Value: " << myValue << std::endl;
-  printWorld(world, 1);
 
   
   MPI_Finalize();
