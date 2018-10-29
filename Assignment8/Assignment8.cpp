@@ -54,7 +54,6 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
 
 int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
 {
-  std::cerr << "Test2" << std::endl;
   int neighbors = countNeighbors(world, x, y, localSize);
   if (neighbors <= 1 || neighbors >= 4)
   {
