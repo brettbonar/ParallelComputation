@@ -28,7 +28,7 @@ int printWorld(int world[][WORLD_SIZE], int it)
   }
 }
 
-int countNeighbors(int world[][WORLD_SIZE], x, y, localSize)
+int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
 {
   int count = 0;
   if (x > 0)
@@ -52,7 +52,7 @@ int countNeighbors(int world[][WORLD_SIZE], x, y, localSize)
   return count;
 }
 
-int updateCell(int world[][WORLD_SIZE], x, y, localSize)
+int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
 {
   int neighbors = countNeighbors(world, x, y, localSize);
   if (neighbors <= 1 || neighbors >= 4)
@@ -72,7 +72,7 @@ int updateCell(int world[][WORLD_SIZE], x, y, localSize)
   return 1;
 }
 
-void updateWorld(int world[][WORLD_SIZE], localSize)
+void updateWorld(int world[][WORLD_SIZE], int localSize)
 {
   for (int x = 0; x < localSize; x++)
   {
