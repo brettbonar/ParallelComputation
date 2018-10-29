@@ -122,6 +122,7 @@ int main(int argc, char **argv){
   localWorld[502][499] = 1;
   localWorld[501][498] = 1;
 
+  printWorld(localWorld, i);
   for (int i = 0; i < iterations; i++)
   {
     updateWorld(localWorld, localSize);
