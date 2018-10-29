@@ -60,9 +60,9 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
     return 0;
   }
 
-  if (neighbors === 3)
+  if (neighbors == 3)
   {
-    if (world[x][y] === 0)
+    if (world[x][y] == 0)
     {
       return 1;
     }
