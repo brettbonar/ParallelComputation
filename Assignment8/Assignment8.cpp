@@ -105,6 +105,16 @@ int main(int argc, char **argv){
     localSize++;
   }
   auto localWorld = new int[localSize][WORLD_SIZE]();
+  for (int x = 0; x < localSize; x++)
+  {
+    for (int y = 0; y < WORLD_SIZE; y++)
+    {
+      if (rand() % 3 == 0)
+      {
+        world[x][y] = 1;
+      }
+    }
+  }
 
   for (int i = 0; i < iterations; i++)
   {
