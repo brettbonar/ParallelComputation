@@ -33,30 +33,37 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
   int count = 0;
   if (x > 0)
   {
+  std::cout << "countNeighbors1" << std::endl;
     count += world[x - 1][y];
   }
   if (x < localSize - 1)
   {
+  std::cout << "countNeighbors2" << std::endl;
     count += world[x + 1][y];
   }
 
   if (y > 0)
   {
+  std::cout << "countNeighbors3" << std::endl;
     count += world[x][y - 1];
   }
   if (y < WORLD_SIZE - 1)
   {
+  std::cout << "countNeighbors4" << std::endl;
     count += world[x][y + 1];
   }
 
+  std::cout << "countNeighbors5" << std::endl;
   return count;
 }
 
 int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
 {
+  std::cout << "Test2" << std::endl;
   int neighbors = countNeighbors(world, x, y, localSize);
   if (neighbors <= 1 || neighbors >= 4)
   {
+  std::cout << "Test3" << std::endl;
     return 0;
   }
 
@@ -64,20 +71,25 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
   {
     if (world[x][y] == 0)
     {
+  std::cout << "Test4" << std::endl;
       return 1;
     }
+  std::cout << "Test5" << std::endl;
     return 0;
   }
 
+  std::cout << "Test6" << std::endl;
   return 1;
 }
 
 void updateWorld(int world[][WORLD_SIZE], int localSize)
 {
+  std::cout << "Test1" << std::endl;
   for (int x = 0; x < localSize; x++)
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
+      std::cout << "Update" << " " << x << " " << y << std::endl;
       world[x][y] = updateCell(world, x, y, localSize);
     }
   }
