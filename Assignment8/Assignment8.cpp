@@ -105,16 +105,22 @@ int main(int argc, char **argv){
     localSize++;
   }
   auto localWorld = new int[localSize][WORLD_SIZE]();
-  for (int x = 0; x < localSize; x++)
-  {
-    for (int y = 0; y < WORLD_SIZE; y++)
-    {
-      if (rand() % 15 == 0)
-      {
-        localWorld[x][y] = 1;
-      }
-    }
-  }
+  // for (int x = 0; x < localSize; x++)
+  // {
+  //   for (int y = 0; y < WORLD_SIZE; y++)
+  //   {
+  //     if (rand() % 15 == 0)
+  //     {
+  //       localWorld[x][y] = 1;
+  //     }
+  //   }
+  // }
+
+  localWorld[500][500] = 1;
+  localWorld[501][500] = 1;
+  localWorld[502][500] = 1;
+  localWorld[502][499] = 1;
+  localWorld[501][498] = 1;
 
   for (int i = 0; i < iterations; i++)
   {
