@@ -93,23 +93,23 @@ int main(int argc, char **argv){
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
 
-  int LOCAL_SIZE = WORLD_SIZE / size;
+  int localSize = WORLD_SIZE / size;
 
   if (size > 1)
   {
-    LOCAL_SIZE++;
+    localSize++;
   }
 
   if (rank > 0 && rank < size - 1)
   {
-    LOCAL_SIZE++;
+    localSize++;
   }
-  int localWorld[LOCAL_SIZE][WORLD_SIZE] = {};
+  int localWorld[localSize][WORLD_SIZE] = {};
 
   for (int i = 0; i < iterations; i++)
   {
     updateWorld(localWorld, localSize);
-  printWorld(world, i);
+    printWorld(world, i);
   }
 
   //std::srand(rank * std::time(nullptr));
