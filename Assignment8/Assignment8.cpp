@@ -109,7 +109,7 @@ int main(int argc, char **argv){
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
-      if (rand() % 3 == 0)
+      if (rand() % 15 == 0)
       {
         world[x][y] = 1;
       }
