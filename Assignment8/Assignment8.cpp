@@ -119,7 +119,7 @@ int main(int argc, char **argv){
   for (int i = 0; i < iterations; i++)
   {
     updateWorld(localWorld, localSize);
-    printWorld(world, i);
+    printWorld(localWorld, i);
   }
 
   //std::srand(rank * std::time(nullptr));
