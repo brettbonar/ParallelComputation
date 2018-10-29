@@ -120,7 +120,7 @@ int main(int argc, char **argv){
     localSize++;
   }
   std::cerr << "2" << std::endl;
-  int localWorld[localSize][WORLD_SIZE] = {};
+  auto localWorld = new int[localSize][WORLD_SIZE]();
 
   std::cerr << "2" << std::endl;
   for (int i = 0; i < iterations; i++)
