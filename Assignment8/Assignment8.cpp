@@ -34,10 +34,27 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
   if (x > 0)
   {
     count += world[x - 1][y];
+    if (y > 0)
+    {
+      count += world[x - 1][y - 1];
+    }
+    if (y < WORLD_SIZE - 1)
+    {
+      count += world[x - 1][y + 1];
+    }
   }
   if (x < localSize - 1)
   {
     count += world[x + 1][y];
+
+    if (y > 0)
+    {
+      count += world[x + 1][y - 1];
+    }
+    if (y < WORLD_SIZE - 1)
+    {
+      count += world[x + 1][y + 1];
+    }
   }
 
   if (y > 0)
