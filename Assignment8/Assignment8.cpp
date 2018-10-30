@@ -77,13 +77,13 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
   return 1;
 }
 
-void updateWorld(int world[][WORLD_SIZE], int localSize)
+void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int localSize)
 {
   for (int x = 0; x < localSize; x++)
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
-      world[x][y] = updateCell(world, x, y, localSize);
+      targetWorld[x][y] = updateCell(world, x, y, localSize);
     }
   }
 }
@@ -109,7 +109,8 @@ int main(int argc, char **argv){
   {
     localSize++;
   }
-  auto localWorld = new int[localSize][WORLD_SIZE]();
+  auto localWorld1 = new int[localSize][WORLD_SIZE]();
+  auto localWorld2 = new int[localSize][WORLD_SIZE]();
   // for (int x = 0; x < localSize; x++)
   // {
   //   for (int y = 0; y < WORLD_SIZE; y++)
@@ -121,17 +122,29 @@ int main(int argc, char **argv){
   //   }
   // }
 
-  localWorld[500][500] = 1;
-  localWorld[501][500] = 1;
-  localWorld[502][500] = 1;
-  localWorld[502][499] = 1;
-  localWorld[501][498] = 1;
+  localWorld1[500][500] = 1;
+  localWorld1[501][500] = 1;
+  localWorld1[502][500] = 1;
+  localWorld1[502][499] = 1;
+  localWorld1[501][498] = 1;
 
-  printWorld(localWorld, 0);
+  localWorld2[500][500] = 1;
+  localWorld2[501][500] = 1;
+  localWorld2[502][500] = 1;
+  localWorld2[502][499] = 1;
+  localWorld2[501][498] = 1;
+
+  auto sourceWorld = localWorld1;
+  auto targetWorld = localWorld2;
+
+  printWorld(sourceWorld, 0);
   for (int i = 1; i < iterations; i++)
   {
-    updateWorld(localWorld, localSize);
-    printWorld(localWorld, i);
+    updateWorld(sourceWorld, targetWorld, localSize);
+    printWorld(targetWorld, i);
+    auto temp = sourceWorld;
+    sourceWorld = targetWorld;
+    targetWorld = temp;
   }
 
   //std::srand(rank * std::time(nullptr));
