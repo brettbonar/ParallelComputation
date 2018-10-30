@@ -55,17 +55,21 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
 int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
 {
   int neighbors = countNeighbors(world, x, y, localSize);
-  if (world[x][y])
-  {
-    std::cerr << neighbors << std::endl;
-  }
+  // if (world[x][y])
+  // {
+  //   std::cerr << neighbors << std::endl;
+  // }
 
-  if (neighbors <= 1 || neighbors >= 4)
-  {
-    return 0;
-  }
 
-  if (world[x][y] == 0)
+  if (world[x][y] == 1)
+  {
+    if (neighbors <= 1 || neighbors >= 4)
+    {
+      return 0;
+    }
+    return 1;
+  }
+  else
   {
     if (neighbors == 3)
     {
