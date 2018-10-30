@@ -132,14 +132,14 @@ int main(int argc, char **argv){
   localWorld1[502][499] = 1;
   localWorld1[501][498] = 1;
 
-  localWorld[400][500] = 1;
-  localWorld[401][500] = 1;
-  localWorld[402][500] = 1;
+  localWorld1[400][500] = 1;
+  localWorld1[401][500] = 1;
+  localWorld1[402][500] = 1;
 
-  localWorld[300][500] = 1;
-  localWorld[301][500] = 1;
-  localWorld[300][501] = 1;
-  localWorld[301][501] = 1;
+  localWorld1[300][500] = 1;
+  localWorld1[301][500] = 1;
+  localWorld1[300][501] = 1;
+  localWorld1[301][501] = 1;
 
   auto sourceWorld = localWorld1;
   auto targetWorld = localWorld2;
