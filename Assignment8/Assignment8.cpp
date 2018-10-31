@@ -138,7 +138,7 @@ int main(int argc, char **argv){
     {
       if (rand() % 5 == 0)
       {
-        localWorld[x][y] = 1;
+        localWorld1[x][y] = 1;
       }
     }
   }
