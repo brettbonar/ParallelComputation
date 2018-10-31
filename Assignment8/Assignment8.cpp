@@ -132,31 +132,31 @@ int main(int argc, char **argv){
   }
   auto localWorld1 = new int[localSize][WORLD_SIZE]();
   auto localWorld2 = new int[localSize][WORLD_SIZE]();
-  // for (int x = 0; x < localSize; x++)
-  // {
-  //   for (int y = 0; y < WORLD_SIZE; y++)
-  //   {
-  //     if (rand() % 15 == 0)
-  //     {
-  //       localWorld[x][y] = 1;
-  //     }
-  //   }
-  // }
+  for (int x = 0; x < localSize; x++)
+  {
+    for (int y = 0; y < WORLD_SIZE; y++)
+    {
+      if (rand() % 5 == 0)
+      {
+        localWorld[x][y] = 1;
+      }
+    }
+  }
 
-  localWorld1[500][500] = 1;
-  localWorld1[501][500] = 1;
-  localWorld1[502][500] = 1;
-  localWorld1[502][499] = 1;
-  localWorld1[501][498] = 1;
+  // localWorld1[500][500] = 1;
+  // localWorld1[501][500] = 1;
+  // localWorld1[502][500] = 1;
+  // localWorld1[502][499] = 1;
+  // localWorld1[501][498] = 1;
 
-  localWorld1[400][500] = 1;
-  localWorld1[401][500] = 1;
-  localWorld1[402][500] = 1;
+  // localWorld1[400][500] = 1;
+  // localWorld1[401][500] = 1;
+  // localWorld1[402][500] = 1;
 
-  localWorld1[300][500] = 1;
-  localWorld1[301][500] = 1;
-  localWorld1[300][501] = 1;
-  localWorld1[301][501] = 1;
+  // localWorld1[300][500] = 1;
+  // localWorld1[301][500] = 1;
+  // localWorld1[300][501] = 1;
+  // localWorld1[301][501] = 1;
 
   auto sourceWorld = localWorld1;
   auto targetWorld = localWorld2;
