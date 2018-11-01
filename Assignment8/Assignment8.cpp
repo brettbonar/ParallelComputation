@@ -181,22 +181,6 @@ int main(int argc, char **argv){
     back = new int[WORLD_SIZE];
   }
 
-
-
-  // localWorld1[500][500] = 1;
-  // localWorld1[501][500] = 1;
-  // localWorld1[502][500] = 1;
-  // localWorld1[502][499] = 1;
-  // localWorld1[501][498] = 1;
-
-  // localWorld1[400][500] = 1;
-  // localWorld1[401][500] = 1;
-  // localWorld1[402][500] = 1;
-
-  // localWorld1[300][500] = 1;
-  // localWorld1[301][500] = 1;
-  // localWorld1[300][501] = 1;
-  // localWorld1[301][501] = 1;
   int displacements[size];
   int recvCounts[size];
   for (int i = 0; i < size; i++)
@@ -204,20 +188,20 @@ int main(int argc, char **argv){
     recvCounts[i] = WORLD_SIZE;
   }
 
-  for (int i = 0; i < localSize; i++)
-  {
-    for (int p = 0; p < size; p++)
-    {
-      displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
-    }
+  // for (int i = 0; i < localSize; i++)
+  // {
+  //   for (int p = 0; p < size; p++)
+  //   {
+  //     displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+  //   }
 
-    MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
-      displacements, MPI_INT, 0, MCW);
-  }
-  if (rank == 0)
-  {
-    printWorld(world, 0);
-  }
+  //   MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
+  //     displacements, MPI_INT, 0, MCW);
+  // }
+  // if (rank == 0)
+  // {
+  //   printWorld(world, 0);
+  // }
 
   for (int i = 1; i < iterations; i++)
   {
@@ -248,24 +232,23 @@ int main(int argc, char **argv){
     sourceWorld = targetWorld;
     targetWorld = temp;
 
-    for (int i = 0; i < localSize; i++)
-    {
-      for (int p = 0; p < size; p++)
-      {
-        displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
-      }
+    // for (int i = 0; i < localSize; i++)
+    // {
+    //   for (int p = 0; p < size; p++)
+    //   {
+    //     displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+    //   }
 
-      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
-        displacements, MPI_INT, 0, MCW);
-    }
-    if (rank == 0)
-    {
-      printWorld(world, i);
-      std::cerr << "End iteration " << i << std::endl;
-    }
+    //   MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
+    //     displacements, MPI_INT, 0, MCW);
+    // }
+    // if (rank == 0)
+    // {
+    //   printWorld(world, i);
+    //   std::cerr << "End iteration " << i << std::endl;
+    // }
   }
 
-  
   MPI_Finalize();
 
   return 0;
