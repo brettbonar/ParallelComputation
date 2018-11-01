@@ -174,8 +174,8 @@ int main(int argc, char **argv){
     }
   }
 
-  int[] front;
-  int[] back;
+  int front[];
+  int back[];
 
   if (rank == 0)
   {
