@@ -197,8 +197,23 @@ int main(int argc, char **argv){
   // localWorld1[301][500] = 1;
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
+  std::vector<int> displacements;
+  for (int i = 0; i < size; i++)
+  {
+    displacements.push_back(i * localSize);
+  }
 
-  for (int i = 0; i < iterations; i++)
+  for (int i = 0; i < localSize; i++)
+  {
+    MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], WORLD_SIZE,
+      displacements.data(), MPI_INT, 0, MCW);
+  }
+  if (rank == 0)
+  {
+    printWorld(world, 0);
+  }
+
+  for (int i = 1; i < iterations; i++)
   {
     if (rank == 0)
     {
@@ -215,28 +230,26 @@ int main(int argc, char **argv){
 
     if (rank > 0)
     {
-      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, backTag, MCW);
+      MPI_Send(&sourceWorld[0], WORLD_SIZE, MPI_INT, rank - 1, backTag, MCW);
     }
     if (rank < size - 1)
     {
       MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, backTag, MCW, MPI_STATUS_IGNORE);
     }
 
-    if (i > 0)
-    {
-      updateWorld(sourceWorld, targetWorld, localSize, front, back);
-      //printWorld(targetWorld, i);
-      auto temp = sourceWorld;
-      sourceWorld = targetWorld;
-      targetWorld = temp;
-    }
-    else
-    {
-      //printWorld(sourceWorld, i);
-    }
+    updateWorld(sourceWorld, targetWorld, localSize, front, back);
+    auto temp = sourceWorld;
+    sourceWorld = targetWorld;
+    targetWorld = temp;
 
+    for (int i = 0; i < localSize; i++)
+    {
+      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], WORLD_SIZE,
+        displacements.data(), MPI_INT, 0, MCW);
+    }
     if (rank == 0)
     {
+      printWorld(world, i);
       std::cerr << "End iteration " << i << std::endl;
     }
   }
