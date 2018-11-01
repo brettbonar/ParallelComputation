@@ -101,7 +101,7 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
   int front[], int back[])
 {
   int neighbors = countNeighbors(world, x, y, localSize, front, back);
-  if (front || back)
+  if (neighbors)
   {
     std::cerr << neighbors << std::endl;
   }
@@ -138,6 +138,7 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
+    std::cerr << x << ", " << y << std::endl;
       targetWorld[x][y] = updateCell(world, x, y, localSize, front, back);
       if (targetWorld[x][y])
       {
