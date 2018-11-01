@@ -28,7 +28,8 @@ int printWorld(int world[][WORLD_SIZE], int it)
   }
 }
 
-int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
+int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize,
+  int front[], int back[])
 {
   int count = 0;
   if (x > 0)
@@ -38,9 +39,18 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
     {
       count += world[x - 1][y - 1];
     }
+    else if (front)
+    {
+      count += front[x - 1];
+    }
+
     if (y < WORLD_SIZE - 1)
     {
       count += world[x - 1][y + 1];
+    }
+    else if (back)
+    {
+      count += back[x - 1];
     }
   }
   if (x < localSize - 1)
@@ -51,9 +61,18 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
     {
       count += world[x + 1][y - 1];
     }
+    else if (front)
+    {
+      count += front[x + 1];
+    }
+
     if (y < WORLD_SIZE - 1)
     {
       count += world[x + 1][y + 1];
+    }
+    else if (back)
+    {
+      count += back[x + 1];
     }
   }
 
@@ -61,17 +80,27 @@ int countNeighbors(int world[][WORLD_SIZE], int x, int y, int localSize)
   {
     count += world[x][y - 1];
   }
+  else if (front)
+  {
+    count += front[x];
+  }
+
   if (y < WORLD_SIZE - 1)
   {
     count += world[x][y + 1];
+  }
+  else if (back)
+  {
+    count += back[x];
   }
 
   return count;
 }
 
-int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
+int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
+  int front[], int back[])
 {
-  int neighbors = countNeighbors(world, x, y, localSize);
+  int neighbors = countNeighbors(world, x, y, localSize, front, back);
   // if (world[x][y])
   // {
   //   std::cerr << neighbors << std::endl;
@@ -98,13 +127,14 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize)
   return 1;
 }
 
-void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int localSize)
+void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int localSize,
+  int front[], int back[])
 {
   for (int x = 0; x < localSize; x++)
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
-      targetWorld[x][y] = updateCell(world, x, y, localSize);
+      targetWorld[x][y] = updateCell(world, x, y, localSize, front, back);
     }
   }
 }
@@ -112,7 +142,7 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
 int main(int argc, char **argv){
   int rank, size;
   int data;
-  int world[WORLD_SIZE][WORLD_SIZE] = {};
+  int world[WORLD_SIZE][WORLD_SIZE];
   int iterations = 100;
 -
   MPI_Init(&argc, &argv);
@@ -130,18 +160,38 @@ int main(int argc, char **argv){
   {
     localSize++;
   }
-  auto localWorld1 = new int[localSize][WORLD_SIZE]();
-  auto localWorld2 = new int[localSize][WORLD_SIZE]();
+  auto sourceWorld = new int[localSize][WORLD_SIZE]();
+  auto targetWorld = new int[localSize][WORLD_SIZE]();
+  srand(rank * time(NULL));
   for (int x = 0; x < localSize; x++)
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
       if (rand() % 5 == 0)
       {
-        localWorld1[x][y] = 1;
+        sourceWorld[x][y] = 1;
       }
     }
   }
+
+  int front[WORLD_SIZE];
+  int back[WORLD_SIZE];
+
+  if (rank == 0)
+  {
+    world = new int[WORLD_SIZE][WORLD_SIZE];
+  }
+
+  if (rank > 0)
+  {
+    front = new int[WORLD_SIZE]();
+  }
+  if (rank < size - 1)
+  {
+    back = new int[WORLD_SIZE]();
+  }
+
+
 
   // localWorld1[500][500] = 1;
   // localWorld1[501][500] = 1;
@@ -158,14 +208,26 @@ int main(int argc, char **argv){
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
 
-  auto sourceWorld = localWorld1;
-  auto targetWorld = localWorld2;
-
-  printWorld(sourceWorld, 0);
-  for (int i = 1; i < iterations; i++)
+  for (int i = 0; i < iterations; i++)
   {
-    updateWorld(sourceWorld, targetWorld, localSize);
+    if (rank < size - 1)
+    {
+      MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
+      MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
+    }
+    if (rank > 0)
+    {
+      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
+      MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
+    }
+
+    if (i > 0)
+    {
+      updateWorld(sourceWorld, targetWorld, localSize, front, back);
+    }
+
     printWorld(targetWorld, i);
+
     auto temp = sourceWorld;
     sourceWorld = targetWorld;
     targetWorld = temp;
