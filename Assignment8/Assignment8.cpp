@@ -135,6 +135,7 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
     for (int y = 0; y < WORLD_SIZE; y++)
     {
       targetWorld[x][y] = updateCell(world, x, y, localSize, front, back);
+      std::cerr << targetWorld[x][y] << std::endl;
     }
   }
 }
