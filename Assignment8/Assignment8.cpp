@@ -101,10 +101,6 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
   int front[], int back[])
 {
   int neighbors = countNeighbors(world, x, y, localSize, front, back);
-  if (neighbors)
-  {
-    std::cerr << neighbors << std::endl;
-  }
   // if (world[x][y])
   // {
   //   std::cerr << neighbors << std::endl;
@@ -139,10 +135,6 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
     for (int y = 0; y < WORLD_SIZE; y++)
     {
       targetWorld[x][y] = updateCell(world, x, y, localSize, front, back);
-      if (targetWorld[x][y])
-      {
-        std::cerr << 1 << std::endl;
-      }
     }
   }
 }
@@ -206,16 +198,16 @@ int main(int argc, char **argv){
 
   for (int i = 0; i < iterations; i++)
   {
-    // if (rank < size - 1)
-    // {
-    //   MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
-    //   MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
-    // }
-    // if (rank > 0)
-    // {
-    //   MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
-    //   MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
-    // }
+    if (rank < size - 1)
+    {
+      MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
+      MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
+    }
+    if (rank > 0)
+    {
+      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
+      MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
+    }
 
     if (i > 0)
     {
