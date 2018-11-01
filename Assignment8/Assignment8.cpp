@@ -198,7 +198,7 @@ int main(int argc, char **argv){
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
   int displacements[size];
-  int recvCounts[size];
+  const int recvCounts[size];
   for (int i = 0; i < size; i++)
   {
     displacements[i] = i * localSize;
