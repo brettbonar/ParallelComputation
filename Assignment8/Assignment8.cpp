@@ -212,20 +212,16 @@ int main(int argc, char **argv){
     if (i > 0)
     {
       updateWorld(sourceWorld, targetWorld, localSize, front, back);
-      printWorld(targetWorld, i);
+      //printWorld(targetWorld, i);
       auto temp = sourceWorld;
       sourceWorld = targetWorld;
       targetWorld = temp;
     }
     else
     {
-      printWorld(sourceWorld, i);
+      //printWorld(sourceWorld, i);
     }
   }
-
-  //std::srand(rank * std::time(nullptr));
-
-  //std::cerr << "Rank: " << rank << ", Value: " << myValue << std::endl;
 
   
   MPI_Finalize();
