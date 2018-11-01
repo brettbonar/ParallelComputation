@@ -142,7 +142,7 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
 int main(int argc, char **argv){
   int rank, size;
   int data;
-  int world[WORLD_SIZE][WORLD_SIZE];
+  int** world;
   int iterations = 100;
 -
   MPI_Init(&argc, &argv);
