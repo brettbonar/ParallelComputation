@@ -138,7 +138,6 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
   {
     for (int y = 0; y < WORLD_SIZE; y++)
     {
-    std::cerr << x << ", " << y << std::endl;
       targetWorld[x][y] = updateCell(world, x, y, localSize, front, back);
       if (targetWorld[x][y])
       {
@@ -222,15 +221,14 @@ int main(int argc, char **argv){
     {
       updateWorld(sourceWorld, targetWorld, localSize, front, back);
       printWorld(targetWorld, i);
+      auto temp = sourceWorld;
+      sourceWorld = targetWorld;
+      targetWorld = temp;
     }
     else
     {
       printWorld(sourceWorld, i);
     }
-
-    auto temp = sourceWorld;
-    sourceWorld = targetWorld;
-    targetWorld = temp;
   }
 
   //std::srand(rank * std::time(nullptr));
