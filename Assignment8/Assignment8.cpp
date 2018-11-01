@@ -210,16 +210,16 @@ int main(int argc, char **argv){
     }
     if (rank > 0)
     {
-      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, backTag, MCW);
+      MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, frontTag, MCW, MPI_STATUS_IGNORE);
     }
 
+    if (rank > 0)
+    {
+      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, backTag, MCW);
+    }
     if (rank < size - 1)
     {
       MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, backTag, MCW, MPI_STATUS_IGNORE);
-    }
-    if (rank > 0)
-    {
-      MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, frontTag, MCW, MPI_STATUS_IGNORE);
     }
 
     if (i > 0)
