@@ -22,7 +22,7 @@ int printWorld(int world[][WORLD_SIZE], int it)
   {
     for(int j = 0; j < WORLD_SIZE; ++j)
     {
-      file << world[i][j] << " ";
+      file << world[i * WORLD_SIZE + j] << " ";
     }
     file << std::endl;
   }
@@ -142,7 +142,7 @@ void updateWorld(int world[][WORLD_SIZE], int targetWorld[][WORLD_SIZE], int loc
 int main(int argc, char **argv){
   int rank, size;
   int data;
-  auto world = new int[WORLD_SIZE][WORLD_SIZE]();
+  auto world = new int[WORLD_SIZE * WORLD_SIZE]();
   int iterations = 100;
 -
   MPI_Init(&argc, &argv);
@@ -201,13 +201,13 @@ int main(int argc, char **argv){
   int recvCounts[size];
   for (int i = 0; i < size; i++)
   {
-    displacements[i] = i * localSize;
+    displacements[i] = i * localSize * WORLD_SIZE;
     recvCounts[i] = WORLD_SIZE;
   }
 
   for (int i = 0; i < localSize; i++)
   {
-    MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], recvCounts,
+    MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
       displacements, MPI_INT, 0, MCW);
   }
   if (rank == 0)
@@ -246,7 +246,7 @@ int main(int argc, char **argv){
 
     for (int i = 0; i < localSize; i++)
     {
-      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], recvCounts,
+      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
         displacements, MPI_INT, 0, MCW);
     }
     if (rank == 0)
