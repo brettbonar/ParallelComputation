@@ -197,7 +197,7 @@ int main(int argc, char **argv){
   // localWorld1[301][500] = 1;
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
-  std::vector<int> displacements;
+  std::vector<const int> displacements;
   for (int i = 0; i < size; i++)
   {
     displacements.push_back(i * localSize);
