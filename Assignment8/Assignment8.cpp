@@ -101,7 +101,10 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
   int front[], int back[])
 {
   int neighbors = countNeighbors(world, x, y, localSize, front, back);
-  std::cerr << neighbors << std::endl;
+  if (neighbors)
+  {
+    std::cerr << neighbors << std::endl;
+  }
   // if (world[x][y])
   // {
   //   std::cerr << neighbors << std::endl;
@@ -172,8 +175,8 @@ int main(int argc, char **argv){
     }
   }
 
-  int* front;
-  int* back;
+  int* front = nullptr;
+  int* back = nullptr;
 
   if (rank > 0)
   {
