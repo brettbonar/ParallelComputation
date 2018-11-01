@@ -101,7 +101,7 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
   int front[], int back[])
 {
   int neighbors = countNeighbors(world, x, y, localSize, front, back);
-  if (neighbors)
+  if (front || back)
   {
     std::cerr << neighbors << std::endl;
   }
