@@ -211,6 +211,10 @@ int main(int argc, char **argv){
     {
       updateWorld(sourceWorld, targetWorld, localSize, front, back);
     }
+    else
+    {
+      printWorld(sourceWorld, i);
+    }
 
     printWorld(targetWorld, i);
 
