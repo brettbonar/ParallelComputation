@@ -206,7 +206,7 @@ int main(int argc, char **argv){
   for (int i = 0; i < localSize; i++)
   {
     MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], WORLD_SIZE,
-      displacements.data(), MPI_INT, 0, MCW);
+      displacements, MPI_INT, 0, MCW);
   }
   if (rank == 0)
   {
@@ -245,7 +245,7 @@ int main(int argc, char **argv){
     for (int i = 0; i < localSize; i++)
     {
       MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], WORLD_SIZE,
-        displacements.data(), MPI_INT, 0, MCW);
+        displacements, MPI_INT, 0, MCW);
     }
     if (rank == 0)
     {
