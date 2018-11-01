@@ -197,10 +197,10 @@ int main(int argc, char **argv){
   // localWorld1[301][500] = 1;
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
-  std::vector<const int> displacements;
+  int displacements[size];
   for (int i = 0; i < size; i++)
   {
-    displacements.push_back(i * localSize);
+    displacements[i] = i * localSize;
   }
 
   for (int i = 0; i < localSize; i++)
