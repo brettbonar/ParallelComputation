@@ -201,12 +201,16 @@ int main(int argc, char **argv){
   int recvCounts[size];
   for (int i = 0; i < size; i++)
   {
-    displacements[i] = i * localSize * WORLD_SIZE;
     recvCounts[i] = WORLD_SIZE;
   }
 
   for (int i = 0; i < localSize; i++)
   {
+    for (int p = 0; p < size; p++)
+    {
+      displacements[i] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+    }
+
     MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
       displacements, MPI_INT, 0, MCW);
   }
@@ -246,6 +250,11 @@ int main(int argc, char **argv){
 
     for (int i = 0; i < localSize; i++)
     {
+      for (int p = 0; p < size; p++)
+      {
+        displacements[i] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+      }
+
       MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
         displacements, MPI_INT, 0, MCW);
     }
