@@ -174,8 +174,8 @@ int main(int argc, char **argv){
     }
   }
 
-  int front[WORLD_SIZE];
-  int back[WORLD_SIZE];
+  int[] front;
+  int[] back;
 
   if (rank == 0)
   {
