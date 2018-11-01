@@ -198,7 +198,7 @@ int main(int argc, char **argv){
   // localWorld1[300][501] = 1;
   // localWorld1[301][501] = 1;
   int displacements[size];
-  const int recvCounts[size];
+  int recvCounts[size];
   for (int i = 0; i < size; i++)
   {
     displacements[i] = i * localSize;
@@ -246,7 +246,7 @@ int main(int argc, char **argv){
 
     for (int i = 0; i < localSize; i++)
     {
-      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], WORLD_SIZE,
+      MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world[i], recvCounts,
         displacements, MPI_INT, 0, MCW);
     }
     if (rank == 0)
