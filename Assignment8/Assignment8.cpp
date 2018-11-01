@@ -150,6 +150,8 @@ int main(int argc, char **argv){
   MPI_Comm_size(MCW, &size);
 
   int localSize = WORLD_SIZE / size;
+  int frontTag = 0;
+  int backTag = 1;
   
   auto sourceWorld = new int[localSize][WORLD_SIZE]();
   auto targetWorld = new int[localSize][WORLD_SIZE]();
@@ -198,14 +200,25 @@ int main(int argc, char **argv){
 
   for (int i = 0; i < iterations; i++)
   {
+    if (rank == 0)
+    {
+      std::cerr << "Start iteration " << i << std::endl;
+    }
     if (rank < size - 1)
     {
       MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
-      MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
     }
     if (rank > 0)
     {
       MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
+    }
+
+    if (rank < size - 1)
+    {
+      MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
+    }
+    if (rank > 0)
+    {
       MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
     }
 
@@ -220,6 +233,11 @@ int main(int argc, char **argv){
     else
     {
       //printWorld(sourceWorld, i);
+    }
+
+    if (rank == 0)
+    {
+      std::cerr << "End iteration " << i << std::endl;
     }
   }
 
