@@ -153,6 +153,8 @@ int main(int argc, char **argv){
   
   auto sourceWorld = new int[localSize][WORLD_SIZE]();
   auto targetWorld = new int[localSize][WORLD_SIZE]();
+  std::cerr << "Rank: " << rank << ", Local Size: " << localSize << std::endl;
+
   srand(rank * time(NULL));
   for (int x = 0; x < localSize; x++)
   {
@@ -196,27 +198,26 @@ int main(int argc, char **argv){
 
   for (int i = 0; i < iterations; i++)
   {
-    if (rank < size - 1)
-    {
-      MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
-      MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
-    }
-    if (rank > 0)
-    {
-      MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
-      MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
-    }
+    // if (rank < size - 1)
+    // {
+    //   MPI_Send(sourceWorld[localSize - 1], WORLD_SIZE , MPI_INT, rank + 1, 0, MCW);
+    //   MPI_Recv(back, WORLD_SIZE, MPI_INT, rank + 1, 0, MCW, MPI_STATUS_IGNORE);
+    // }
+    // if (rank > 0)
+    // {
+    //   MPI_Send(&sourceWorld[0], WORLD_SIZE , MPI_INT, rank - 1, 0, MCW);
+    //   MPI_Recv(front, WORLD_SIZE, MPI_INT, rank - 1, 0, MCW, MPI_STATUS_IGNORE);
+    // }
 
     if (i > 0)
     {
       updateWorld(sourceWorld, targetWorld, localSize, front, back);
+      printWorld(targetWorld, i);
     }
     else
     {
       printWorld(sourceWorld, i);
     }
-
-    printWorld(targetWorld, i);
 
     auto temp = sourceWorld;
     sourceWorld = targetWorld;
