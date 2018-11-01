@@ -150,16 +150,7 @@ int main(int argc, char **argv){
   MPI_Comm_size(MCW, &size);
 
   int localSize = WORLD_SIZE / size;
-
-  if (size > 1)
-  {
-    localSize++;
-  }
-
-  if (rank > 0 && rank < size - 1)
-  {
-    localSize++;
-  }
+  
   auto sourceWorld = new int[localSize][WORLD_SIZE]();
   auto targetWorld = new int[localSize][WORLD_SIZE]();
   srand(rank * time(NULL));
