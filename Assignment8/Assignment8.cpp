@@ -11,7 +11,7 @@
 
 const int WORLD_SIZE = 1024;
 
-int printWorld(int world[][WORLD_SIZE], int it)
+int printWorld(int world[], int it)
 {
   std::ofstream file;
   file.open(std::to_string(it) + ".pbm");
