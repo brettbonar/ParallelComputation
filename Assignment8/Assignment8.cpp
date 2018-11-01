@@ -184,11 +184,11 @@ int main(int argc, char **argv){
 
   if (rank > 0)
   {
-    front = new int[WORLD_SIZE]();
+    front = new int[WORLD_SIZE];
   }
   if (rank < size - 1)
   {
-    back = new int[WORLD_SIZE]();
+    back = new int[WORLD_SIZE];
   }
 
 
