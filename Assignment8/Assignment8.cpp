@@ -208,7 +208,7 @@ int main(int argc, char **argv){
   {
     for (int p = 0; p < size; p++)
     {
-      displacements[i] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+      displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
     }
 
     MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
@@ -252,7 +252,7 @@ int main(int argc, char **argv){
     {
       for (int p = 0; p < size; p++)
       {
-        displacements[i] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
+        displacements[p] = p * localSize * WORLD_SIZE + i * WORLD_SIZE;
       }
 
       MPI_Gatherv(sourceWorld[i], WORLD_SIZE, MPI_INT, world, recvCounts,
