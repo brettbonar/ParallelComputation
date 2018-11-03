@@ -53,14 +53,11 @@
 \maketitle
 
 \section{Implementation}
-I separated the problem into processes by assigning each process a set of rows based on its rank and number of processes. This way each process would know what it needs to compute without requiring input or instructions from any master process.
 
-The only MPI communication is an MPI Gather to collect all computed pixels from each process into the "master" process with rank 0 to output the results to a file. The RGB values of each pixel were saved as a single integer to save some space in transferring between processes.
 
 \section{Results}
-For 512 x 512 images, it took about 2.5 seconds to run using a single process. This goes down to about 1.9 seconds with two processes, 1.4 with four, and around 1 second with eight.
-
-Any number of processors above eight would start to slow down the time slightly. This is likely because the Linux VM I used had eight cores and using more than eight processes would just create more communication overhead than necessary.
+Average ~3 seconds with 1 process.
+Average ~1.65 seconds with 1 process.
 
 \section{Code}
 
@@ -68,8 +65,8 @@ Any number of processors above eight would start to slow down the time slightly.
 
 \section{Compile and Run Commands}
 \begin{lstlisting}[language=bash]
-mpic++ Assignment6/Assignment6.cpp -o Assignment6/run.out
-time mpirun -np 8 Assignment6/run.out 512 > mbrotp.ppm
+mpic++ Assignment8/Assignment8.cpp -o Assignment8/run.out
+time mpirun -np # Assignment8/run.out
 \end{lstlisting}
 
 \end{document}
