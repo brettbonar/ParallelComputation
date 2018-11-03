@@ -54,14 +54,43 @@
 
 \section{Implementation}
 
+\begin{figure}
+	\includegraphics[width=\linewidth]{0.png}
+	\caption{Game of Life Output}
+	\label{fig:output}
+\end{figure}
+
+The program splits the problem set into an equal number of rows for each process. Each process individually creates a two dimensional array of numbers representing the world and randomly populates its piece of the world. A 1 represents a living cell while a 0 represents a dead cell.
+
+However, since cells at the edge of a process's boundaries will need to know about cells in the adjacent process to count the correct number of neighbors, each process sends its first and last rows to adjacent processes at the beginning of each iteration (with the exception of process 0 and the last process, which send only the first or last row).
+
+After each process updates all the cells in its piece of the world, all of the results are gathered into the root process which writes an image to a PBM file as shown in Figure 1.
 
 \section{Results}
-Average ~3 seconds with 1 process.
-Average ~1.65 seconds with 1 process.
+Timing results including gathering and writing the entire state of the world to a PBM file at the end of each iteration:
+\begin{itemize}
+	\item Average 10.15 seconds with 1 process
+	\item Average 8.8 seconds with 2 processes
+	\item Average 8.13 seconds with 4 processes
+	\item Average 7.85 seconds with 8 processes
+\end{itemize}
+
+
+The time goes up when using more than 8 processes since it is now going over the number of available processors on the machine.
+
+The performance improvement with additional processors is greatly mitigated by the requirement to transmit the results of each iteration to the root process for printing. This could be fixed by having each process write just its piece and concatenating files together at a later point or by disabling the final write step altogether.
+
+The timing and improvement with additional processors is much better when omitting the final gather and write step:
+\begin{itemize}
+	\item Average 3 seconds with 1 process.
+	\item Average 1.65 seconds with 2 processes.
+	\item Average 0.96 seconds with 4 processes.
+	\item Average 0.65 seconds with 8 processes.
+\end{itemize}
 
 \section{Code}
 
-\lstinputlisting[language=C++]{Assignment6.cpp}
+\lstinputlisting[language=C++]{Assignment8.cpp}
 
 \section{Compile and Run Commands}
 \begin{lstlisting}[language=bash]

@@ -106,7 +106,6 @@ int updateCell(int world[][WORLD_SIZE], int x, int y, int localSize,
   //   std::cerr << neighbors << std::endl;
   // }
 
-
   if (world[x][y] == 1)
   {
     if (neighbors <= 1 || neighbors >= 4)
