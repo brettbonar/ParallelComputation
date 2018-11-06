@@ -69,6 +69,7 @@ int main(int argc, char **argv){
   MPI_Request sendRequest;
   MPI_Request doneRequest;
   MPI_Status myStatus;
+  MPI_Status doneStatus;
 -
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
@@ -126,7 +127,7 @@ int main(int argc, char **argv){
       }
     }
 
-    MPI_Test(&doneRequest, &doneFlag, &myStatus);
+    MPI_Test(&doneRequest, &doneFlag, &doneStatus);
 
     if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
     {
