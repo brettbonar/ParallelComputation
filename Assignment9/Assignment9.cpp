@@ -33,7 +33,7 @@ int main(int argc, char **argv){
   // or something like that.
 
   srand(time(nullptr) * rank);
-  int numTasks = rand() % 32;
+  int numTasks = rand() % 32 + 16;
 
   std::cerr << "Rank: " << rank << ", Start Tasks: " << numTasks << std::endl;
 
@@ -59,7 +59,7 @@ int main(int argc, char **argv){
       // Do work then check for more work
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
-      std::cerr << rank << " completed a task, how has" << numTasks << std::endl;
+      std::cerr << rank << " completed a task, how has " << numTasks << std::endl;
       MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
     if (jobFlag)
