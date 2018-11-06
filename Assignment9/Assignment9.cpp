@@ -95,7 +95,7 @@ int main(int argc, char **argv){
 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
-      //std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
+      std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
 
       MPI_Test(&jobRequest, &jobFlag, MPI_STATUS_IGNORE);
       while (jobFlag)
@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 
   //MPI_Test(&doneRequest, &doneFlag, MPI_STATUS_IGNORE);
 
-  std::cerr << "Rank: " << rank << " is done" << std::endl;
+  std::cerr << rank << " is done" << std::endl;
 
   int token = 1;
   if (rank == 0)
@@ -122,7 +122,7 @@ int main(int argc, char **argv){
 
   while (!handleToken(rank, size, token, isWhite)) {}
 
-  std::cerr << "Rank: " << rank << " finished" << std::endl;
+  std::cerr << "All finished" << std::endl;
 
   MPI_Finalize();
 
