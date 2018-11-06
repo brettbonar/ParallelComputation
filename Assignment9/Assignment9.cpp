@@ -19,6 +19,7 @@ const int DONE = 1;
 bool handleToken(int rank, int size, int& token, bool& isWhite)
 {
   MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, MPI_STATUS_IGNORE);
+  std::cerr << rank << " received token " << token << std::endl;
   if (rank == 0)
   {
     if (token == 1)
@@ -29,6 +30,7 @@ bool handleToken(int rank, int size, int& token, bool& isWhite)
     {
       token = 1;
       MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
+      std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
     }
   }
   else
@@ -38,8 +40,8 @@ bool handleToken(int rank, int size, int& token, bool& isWhite)
       token = 0;
     }
     MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
+    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
   }
-  MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, MPI_STATUS_IGNORE);
 
   return false;
 }
@@ -114,9 +116,12 @@ int main(int argc, char **argv){
   if (rank == 0)
   {
     MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
+    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
   }
 
   while (!handleToken(rank, size, token, isWhite)) {}
+
+  std::cerr << "Rank: " << rank << " finished" << std::endl;
 
   MPI_Finalize();
 
