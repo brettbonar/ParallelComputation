@@ -45,8 +45,9 @@ int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& send
       token = 0;
     }
 
-    MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
-    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
+    int target = (rank + 1) % size;
+    MPI_Send(&token, 1, MPI_INT, target, TOKEN, MCW);
+    std::cerr << rank << " sent token " << token << " to " << target << std::endl;
     isWhite = true;
     //std::cerr << rank << " is white " << std::endl;
   }
@@ -118,7 +119,7 @@ int main(int argc, char **argv){
       while (jobFlag)
       {
         numTasks++;
-        //std::cerr << rank << " received a task, now has " << numTasks << std::endl;
+        std::cerr << rank << " received a task, now has " << numTasks << std::endl;
         MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
         MPI_Test(&jobRequest, &jobFlag, MPI_STATUS_IGNORE);
       }
@@ -129,7 +130,6 @@ int main(int argc, char **argv){
     if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
     {
       std::cerr << rank << " ready to receive new token" << std::endl;
-      tokenRequest = MPI_Request();
       MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
     }
   }
