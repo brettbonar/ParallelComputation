@@ -104,24 +104,24 @@ int main(int argc, char **argv){
             isWhite = false;
             std::cerr << rank << " is black " << std::endl;
           }
-          std::cerr << rank << " sending task to " << target << std::endl;
+          //std::cerr << rank << " sending task to " << target << std::endl;
           MPI_Isend(&sendData, 1, MPI_INT, target, JOB, MCW, &sendRequest);
         }
         numTasks -= count;
-        std::cerr << "Rank: " << rank << ", # Tasks: " << numTasks << std::endl;
+        //std::cerr << "Rank: " << rank << ", # Tasks: " << numTasks << std::endl;
       }
 
       int jobFlag = 0;
 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
-      std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
+      //std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
 
       MPI_Test(&jobRequest, &jobFlag, &myStatus);
       while (jobFlag)
       {
         numTasks++;
-        std::cerr << rank << " received a task, now has " << numTasks << std::endl;
+        //std::cerr << rank << " received a task, now has " << numTasks << std::endl;
         MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
         MPI_Test(&jobRequest, &jobFlag, &myStatus);
       }
