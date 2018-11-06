@@ -46,7 +46,7 @@ int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& send
     }
 
     int target = (rank + 1) % size;
-    MPI_Send(&token, 1, MPI_INT, target, TOKEN, MCW);
+    MPI_Isend(&token, 1, MPI_INT, target, TOKEN, MCW, &sendRequest);
     std::cerr << rank << " sent token " << token << " to " << target << std::endl;
     isWhite = true;
     //std::cerr << rank << " is white " << std::endl;
