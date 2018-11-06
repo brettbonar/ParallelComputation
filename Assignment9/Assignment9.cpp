@@ -18,7 +18,7 @@ const int DONE = 1;
 
 bool handleToken(int rank, int size, int& token, bool& isWhite)
 {
-  MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW);
+  MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, MPI_STATUS_IGNORE);
   if (rank == 0)
   {
     if (token == 1)
@@ -39,7 +39,7 @@ bool handleToken(int rank, int size, int& token, bool& isWhite)
     }
     MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
   }
-  MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW);
+  MPI_Recv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, MPI_STATUS_IGNORE);
 
   return false;
 }
