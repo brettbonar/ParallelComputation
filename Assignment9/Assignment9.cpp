@@ -131,7 +131,7 @@ int main(int argc, char **argv){
     if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
     {
       MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
-    }|
+    }
   }
 
   std::cerr << "Rank: " << rank << " is done" << std::endl;
