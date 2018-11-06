@@ -13,38 +13,76 @@
 
 const int TASK_THRESHOLD = 16;
 const int JOB = 0;
+const int TOKEN = 1;
+
+int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sendRequest, MPI_Request& tokenRequest)
+{
+  MPI_Status myStatus;
+  int tokenFlag = 0;
+  MPI_Test(&tokenRequest, &tokenFlag, &myStatus);
+  if (tokenFlag)
+  {
+    std::cerr << rank << " received token " << token << std::endl;
+    if (rank == 0)
+    {
+      token = 1;
+    }
+    else if (!isWhite)
+    {
+      token = 0;
+    }
+
+    std::cerr << rank << " sent token " << token << std::endl;
+    MPI_Isend(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW, &sendRequest);
+    MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
+    isWhite = true;
+    std::cerr << rank << " is white " << target << std::endl;
+  }
+}
 
 int main(int argc, char **argv){
   int rank, size;
   int data;
   int sendData = 1;
+  int token = 1;
+  bool isWhite = true;
 
   MPI_Request myRequest;
+  MPI_Request tokenRequest;
   MPI_Request sendRequest;
   MPI_Status myStatus;
 -
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
-
-  // TODO: use MPI_Iprobe instead? Use different tags to check for available work and actual work?
-  // Each process generates a number of tasks?
-  // Process turns black only if it has sent work to a lower process. Because token can't be aware of lower things
-  // or something like that.
-
+  
   srand(time(nullptr) * rank);
   int numTasks = rand() % 32 + 16;
 
   std::cerr << "Rank: " << rank << ", Start Tasks: " << numTasks << std::endl;
 
+  if (rank == 0)
+  {
+    MPI_Isend(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW, &sendRequest);
+  }
+  else
+  {
+    MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);    
+  }
+
   while (numTasks)
   {
     if (numTasks > TASK_THRESHOLD)
     {
-      int count = numTasks - TASK_THRESHOLD;
+      int count = 2
       for (int i = 0; i < count; i++)
       {
         int target = rand() % size;
+        if (target < rank)
+        {
+          isWhite = false;
+          std::cerr << rank << " is black " << target << std::endl;
+        }
         std::cerr << rank << " sending task to " << target << std::endl;
         MPI_Isend(&sendData, 1, MPI_INT, target, JOB, MCW, &sendRequest);
       }
@@ -59,13 +97,17 @@ int main(int argc, char **argv){
       // Do work then check for more work
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
-      std::cerr << rank << " completed a task, how has " << numTasks << std::endl;
+      std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
       MPI_Test(&myRequest, &jobFlag, &myStatus);
+      handleToken(rank, size, token, isWhite, sendRequest, tokenRequest);
     }
-    if (jobFlag)
+
+    while (jobFlag)
     {
       numTasks++;
       std::cerr << rank << " received a task, now has " << numTasks << std::endl;
+      MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &myRequest);
+      MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
   }
 
