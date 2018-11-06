@@ -46,7 +46,7 @@ void handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sen
       token = 0;
     }
 
-    std::cerr << rank << " sent token " << token << << " to " << (rank + 1) % size << std::endl;
+    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
     MPI_Isend(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW, &sendRequest);
     MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
     isWhite = true;
