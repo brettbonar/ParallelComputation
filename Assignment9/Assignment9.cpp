@@ -87,7 +87,7 @@ int main(int argc, char **argv){
 
   MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
   MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
-  MPI_Irecv(&done, 1, MPI_INT, MPI_ANY_SOURCE, DONE, MCW, &doneRequest);
+  MPI_Irecv(&done, 1, MPI_INT, 0, DONE, MCW, &doneRequest);
 
   while (!doneFlag)
   {
