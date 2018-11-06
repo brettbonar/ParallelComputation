@@ -35,17 +35,21 @@ int main(int argc, char **argv){
   srand(time(nullptr) * rank);
   int numTasks = rand() % 32;
 
-  bool done = false;
-  while (!done)
+  std::cerr << "Rank: " << rank << ", Start Tasks: " << numTasks << std::endl;
+
+  while (numTasks)
   {
     if (numTasks > TASK_THRESHOLD)
     {
       int count = numTasks - TASK_THRESHOLD;
       for (int i = 0; i < count; i++)
       {
-        MPI_Isend(&sendData, 1, MPI_INT, rand() % size, JOB, MCW, &sendRequest);
+        int target = rand() % size;
+        std::cerr << rank << " sending task to " << target << std::endl;
+        MPI_Isend(&sendData, 1, MPI_INT, target, JOB, MCW, &sendRequest);
       }
       numTasks -= count;
+      std::cerr << "Rank: " << rank << ", # Tasks: " << numTasks << std::endl;
     }
 
     MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &myRequest);
@@ -54,6 +58,7 @@ int main(int argc, char **argv){
     {
       // Do work then check for more work
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      numTasks--;
       MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
     if (jobFlag)
@@ -61,6 +66,8 @@ int main(int argc, char **argv){
       numTasks++;
     }
   }
+
+  std::cerr << "Rank: " << " is done" << std::endl;
 
   MPI_Finalize();
 

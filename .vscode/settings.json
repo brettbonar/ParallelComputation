@@ -41,6 +41,7 @@
     "algorithm": "cpp",
     "iterator": "cpp",
     "tuple": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "fstream": "cpp"
   }
 }
