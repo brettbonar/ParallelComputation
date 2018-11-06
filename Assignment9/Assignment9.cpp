@@ -86,7 +86,7 @@ int main(int argc, char **argv){
   MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
   MPI_Irecv(&done, 1, MPI_INT, 0, DONE, MCW, &doneRequest);
 
-  while (numTasks && !doneFlag)
+  while (numTasks || !doneFlag)
   {
     if (numTasks)
     {
