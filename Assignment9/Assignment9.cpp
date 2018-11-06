@@ -18,9 +18,8 @@ const int DONE = 1;
 
 int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sendRequest, MPI_Request& tokenRequest)
 {
-  MPI_Status myStatus;
   int tokenFlag = 0;
-  MPI_Test(&tokenRequest, &tokenFlag, &myStatus);
+  MPI_Test(&tokenRequest, &tokenFlag, MPI_STATUS_IGNORE);
   if (tokenFlag)
   {
     std::cerr << rank << " received token " << token << std::endl;
@@ -68,8 +67,6 @@ int main(int argc, char **argv){
   MPI_Request tokenRequest;
   MPI_Request sendRequest;
   MPI_Request doneRequest;
-  MPI_Status myStatus;
-  MPI_Status doneStatus;
 -
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
@@ -89,7 +86,7 @@ int main(int argc, char **argv){
   MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
   MPI_Irecv(&done, 1, MPI_INT, 0, DONE, MCW, &doneRequest);
 
-  while (!doneFlag)
+  while (numTasks && !doneFlag)
   {
     if (numTasks)
     {
@@ -117,23 +114,22 @@ int main(int argc, char **argv){
       numTasks--;
       //std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
 
-      MPI_Test(&jobRequest, &jobFlag, &myStatus);
+      MPI_Test(&jobRequest, &jobFlag, MPI_STATUS_IGNORE);
       while (jobFlag)
       {
         numTasks++;
         //std::cerr << rank << " received a task, now has " << numTasks << std::endl;
         MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
-        MPI_Test(&jobRequest, &jobFlag, &myStatus);
+        MPI_Test(&jobRequest, &jobFlag, MPI_STATUS_IGNORE);
       }
     }
 
-    MPI_Test(&doneRequest, &doneFlag, &doneStatus);
+    MPI_Test(&doneRequest, &doneFlag, MPI_STATUS_IGNORE);
 
-    // if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
-    // {
-    //   tokenRequest = MPI_Request();
-    //   MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
-    // }
+    if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
+    {
+      MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
+    }
   }
 
   std::cerr << "Rank: " << rank << " is done" << std::endl;
