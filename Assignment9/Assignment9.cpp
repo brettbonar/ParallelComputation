@@ -41,6 +41,7 @@ bool handleToken(int rank, int size, int& token, bool& isWhite)
     }
     MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
     std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
+    isWhite = true;
   }
 
   return false;
