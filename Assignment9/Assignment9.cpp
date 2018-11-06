@@ -129,11 +129,11 @@ int main(int argc, char **argv){
 
     MPI_Test(&doneRequest, &doneFlag, &doneStatus);
 
-    if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
-    {
-      tokenRequest = MPI_Request();
-      MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
-    }
+    // if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
+    // {
+    //   tokenRequest = MPI_Request();
+    //   MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
+    // }
   }
 
   std::cerr << "Rank: " << rank << " is done" << std::endl;
