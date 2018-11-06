@@ -63,7 +63,7 @@ int main(int argc, char **argv){
   MPI_Comm_size(MCW, &size);
 
   srand(time(nullptr) * rank);
-  int numTasks = rand() % 32 + 16;
+  int numTasks = rand() % 32 + 2;
 
   std::cerr << "Rank: " << rank << ", Start Tasks: " << numTasks << std::endl;
 
@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 
   //MPI_Test(&doneRequest, &doneFlag, MPI_STATUS_IGNORE);
 
-  std::cerr << rank << " is done" << std::endl;
+  std::cerr << rank << " is finished with all tasks" << std::endl;
 
   int token = 1;
   if (rank == 0)
@@ -120,9 +120,17 @@ int main(int argc, char **argv){
     std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
   }
 
-  while (!handleToken(rank, size, token, isWhite)) {}
+  int pass = 0;
+  while (!handleToken(rank, size, token, isWhite))
+  {
+    if (pass > 0)
+    {
+      break;
+    }
+    pass++;
+  }
 
-  std::cerr << "All finished" << std::endl;
+  std::cerr << rank << " is done" << std::endl;
 
   MPI_Finalize();
 
