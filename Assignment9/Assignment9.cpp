@@ -59,12 +59,13 @@ int main(int argc, char **argv){
       // Do work then check for more work
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
-      std::cerr << rank << " completed a task" << std::endl;
+      std::cerr << rank << " completed a task, how has" << numTasks << std::endl;
       MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
     if (jobFlag)
     {
       numTasks++;
+      std::cerr << rank << " received a task, now has " << numTasks << std::endl;
     }
   }
 
