@@ -14,8 +14,9 @@
 const int TASK_THRESHOLD = 16;
 const int JOB = 0;
 const int TOKEN = 1;
+const int DONE = 1;
 
-int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sendRequest, MPI_Request& tokenRequest)
+void handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sendRequest, MPI_Request& tokenRequest)
 {
   MPI_Status myStatus;
   int tokenFlag = 0;
@@ -25,7 +26,19 @@ int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& send
     std::cerr << rank << " received token " << token << std::endl;
     if (rank == 0)
     {
-      token = 1;
+      if (token == 1)
+      {
+        int done = 1;
+        std::cerr << "Finishing..." << std::endl;
+        for (int process = 1; process < size; process++)
+        {
+          MPI_send(&done, 1, MPI_INT, process, DONE, MCW);
+        }
+      }
+      else
+      {
+        token = 1;
+      }
     }
     else if (!isWhite)
     {
@@ -45,11 +58,14 @@ int main(int argc, char **argv){
   int data;
   int sendData = 1;
   int token = 1;
+  int doneFlag = 0;
+  int done = 0;
   bool isWhite = true;
 
-  MPI_Request myRequest;
+  MPI_Request jobRequest;
   MPI_Request tokenRequest;
   MPI_Request sendRequest;
+  MPI_Request doneRequest;
   MPI_Status myStatus;
 -
   MPI_Init(&argc, &argv);
@@ -69,46 +85,50 @@ int main(int argc, char **argv){
   {
     MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);    
   }
+  MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
+  MPI_Irecv(&done, 1, MPI_INT, MPI_ANY_SOURCE, DONE, MCW, &doneRequest);
 
-  while (numTasks)
+  while (!doneFlag)
   {
-    if (numTasks > TASK_THRESHOLD)
-    {
-      int count = 2;
-      for (int i = 0; i < count; i++)
-      {
-        int target = rand() % size;
-        if (target < rank)
-        {
-          isWhite = false;
-          std::cerr << rank << " is black " << std::endl;
-        }
-        std::cerr << rank << " sending task to " << target << std::endl;
-        MPI_Isend(&sendData, 1, MPI_INT, target, JOB, MCW, &sendRequest);
-      }
-      numTasks -= count;
-      std::cerr << "Rank: " << rank << ", # Tasks: " << numTasks << std::endl;
-    }
+    handleToken(rank, size, token, isWhite, sendRequest, tokenRequest);
 
-    MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &myRequest);
-    int jobFlag = 0;
-    while (numTasks && !jobFlag)
+    if (numTasks)
     {
-      // Do work then check for more work
+      if (numTasks > TASK_THRESHOLD)
+      {
+        int count = 2;
+        for (int i = 0; i < count; i++)
+        {
+          int target = rand() % size;
+          if (target < rank)
+          {
+            isWhite = false;
+            std::cerr << rank << " is black " << std::endl;
+          }
+          std::cerr << rank << " sending task to " << target << std::endl;
+          MPI_Isend(&sendData, 1, MPI_INT, target, JOB, MCW, &sendRequest);
+        }
+        numTasks -= count;
+        std::cerr << "Rank: " << rank << ", # Tasks: " << numTasks << std::endl;
+      }
+
+      int jobFlag = 0;
+
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
       std::cerr << rank << " completed a task, now has " << numTasks << std::endl;
-      MPI_Test(&myRequest, &jobFlag, &myStatus);
-      handleToken(rank, size, token, isWhite, sendRequest, tokenRequest);
+
+      MPI_Test(&jobRequest, &jobFlag, &myStatus);
+      while (jobFlag)
+      {
+        numTasks++;
+        std::cerr << rank << " received a task, now has " << numTasks << std::endl;
+        MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
+        MPI_Test(&jobRequest, &jobFlag, &myStatus);
+      }
     }
 
-    while (jobFlag)
-    {
-      numTasks++;
-      std::cerr << rank << " received a task, now has " << numTasks << std::endl;
-      MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &myRequest);
-      MPI_Test(&myRequest, &jobFlag, &myStatus);
-    }
+    MPI_Test(&doneRequest, &doneFlag, &myStatus);
   }
 
   std::cerr << "Rank: " << rank << " is done" << std::endl;
