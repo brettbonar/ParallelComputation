@@ -55,7 +55,7 @@ int main(int argc, char **argv){
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MCW, &rank); 
   MPI_Comm_size(MCW, &size);
-  
+
   srand(time(nullptr) * rank);
   int numTasks = rand() % 32 + 16;
 
@@ -74,7 +74,7 @@ int main(int argc, char **argv){
   {
     if (numTasks > TASK_THRESHOLD)
     {
-      int count = 2
+      int count = 2;
       for (int i = 0; i < count; i++)
       {
         int target = rand() % size;
