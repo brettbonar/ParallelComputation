@@ -30,10 +30,11 @@ void handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sen
       {
         int done = 1;
         std::cerr << "Finishing..." << std::endl;
-        for (int process = 1; process < size; process++)
+        for (int process = 0; process < size; process++)
         {
           MPI_Send(&done, 1, MPI_INT, process, DONE, MCW);
         }
+        return;
       }
       else
       {
@@ -81,10 +82,8 @@ int main(int argc, char **argv){
   {
     MPI_Isend(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW, &sendRequest);
   }
-  else
-  {
-    MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);    
-  }
+
+  MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
   MPI_Irecv(&sendData, 1, MPI_INT, MPI_ANY_SOURCE, JOB, MCW, &jobRequest);
   MPI_Irecv(&done, 1, MPI_INT, MPI_ANY_SOURCE, DONE, MCW, &doneRequest);
 
