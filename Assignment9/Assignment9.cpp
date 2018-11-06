@@ -54,7 +54,7 @@ int main(int argc, char **argv){
     {
       // Do work then check for more work
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
-      MPI_Test(&myRequest, &jobFlag, &myStatus)
+      MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
     if (jobFlag)
     {
