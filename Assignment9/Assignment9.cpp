@@ -32,7 +32,7 @@ void handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& sen
         std::cerr << "Finishing..." << std::endl;
         for (int process = 1; process < size; process++)
         {
-          MPI_send(&done, 1, MPI_INT, process, DONE, MCW);
+          MPI_Send(&done, 1, MPI_INT, process, DONE, MCW);
         }
       }
       else
