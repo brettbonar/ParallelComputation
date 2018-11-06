@@ -57,8 +57,9 @@ int main(int argc, char **argv){
     while (numTasks && !jobFlag)
     {
       // Do work then check for more work
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       numTasks--;
+      std::cerr << rank << " completed a task" << std::endl;
       MPI_Test(&myRequest, &jobFlag, &myStatus);
     }
     if (jobFlag)
@@ -67,7 +68,7 @@ int main(int argc, char **argv){
     }
   }
 
-  std::cerr << "Rank: " << " is done" << std::endl;
+  std::cerr << "Rank: " << rank << " is done" << std::endl;
 
   MPI_Finalize();
 
