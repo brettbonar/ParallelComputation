@@ -130,6 +130,7 @@ int main(int argc, char **argv){
 
     if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
     {
+      tokenRequest = MPI_Request();
       MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
     }
   }
