@@ -45,8 +45,8 @@ int handleToken(int rank, int size, int& token, bool& isWhite, MPI_Request& send
       token = 0;
     }
 
-    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
     MPI_Send(&token, 1, MPI_INT, (rank + 1) % size, TOKEN, MCW);
+    std::cerr << rank << " sent token " << token << " to " << (rank + 1) % size << std::endl;
     isWhite = true;
     //std::cerr << rank << " is white " << std::endl;
   }
@@ -128,6 +128,7 @@ int main(int argc, char **argv){
 
     if (handleToken(rank, size, token, isWhite, sendRequest, tokenRequest))
     {
+      std::cerr << rank << " ready to receive new token" << std::endl;
       tokenRequest = MPI_Request();
       MPI_Irecv(&token, 1, MPI_INT, MPI_ANY_SOURCE, TOKEN, MCW, &tokenRequest);
     }
