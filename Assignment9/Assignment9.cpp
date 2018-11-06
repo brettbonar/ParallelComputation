@@ -108,9 +108,6 @@ int main(int argc, char **argv){
     }
   }
 
-
-  //MPI_Test(&doneRequest, &doneFlag, MPI_STATUS_IGNORE);
-
   std::cerr << rank << " is finished with all tasks" << std::endl;
 
   int token = 1;

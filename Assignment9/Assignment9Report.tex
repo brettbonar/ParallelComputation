@@ -53,23 +53,21 @@
 \maketitle
 
 \section{Implementation}
-I separated the problem into processes by assigning each process a set of rows based on its rank and number of processes. This way each process would know what it needs to compute without requiring input or instructions from any master process.
-
-The only MPI communication is an MPI Gather to collect all computed pixels from each process into the "master" process with rank 0 to output the results to a file. The RGB values of each pixel were saved as a single integer to save some space in transferring between processes.
+My implementation begins with each process generating a random number of tasks to place on its queue. The queue in this instance is actually represented as the number of tasks to complete as each task is just a 1 second sleep.
+The main loop for each process includes checking if its number of tasks is higher than a threshold (16) and passing off 2 tasks to 2 random processes if it is. The process then performs one of the tasks off its queue then checks to see if it has received any new jobs.
+When a process's task queue is empty, it starts an MPI Recv to wait for the white/black token to be passed to it. If it is process 0 then it immediately sends the first white token to the next process.
 
 \section{Results}
-For 512 x 512 images, it took about 2.5 seconds to run using a single process. This goes down to about 1.9 seconds with two processes, 1.4 with four, and around 1 second with eight.
-
-Any number of processors above eight would start to slow down the time slightly. This is likely because the Linux VM I used had eight cores and using more than eight processes would just create more communication overhead than necessary.
+The timing and process load results were fairly even for each process. One exception is if a process has too few tasks and manages to complete before it was able to receive any new work. Otherwise the continual cycle of sending additional tasks to random processes and requesting new work with each iteration of the main loop helped ensure that each process was given a fairly even load.
 
 \section{Code}
 
-\lstinputlisting[language=C++]{Assignment6.cpp}
+\lstinputlisting[language=C++]{Assignment9.cpp}
 
 \section{Compile and Run Commands}
 \begin{lstlisting}[language=bash]
-mpic++ Assignment6/Assignment6.cpp -o Assignment6/run.out
-time mpirun -np 8 Assignment6/run.out 512 > mbrotp.ppm
+mpic++ Assignment9/Assignment9.cpp -o Assignment9/run.out
+time mpirun -np 8 Assignment9/run.out
 \end{lstlisting}
 
 \end{document}
